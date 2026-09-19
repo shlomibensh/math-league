@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#14223D">
+<title>לוח המאמן – ליגת המספרים</title>
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&family=Secular+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --grass:#2F8A47;--grass2:#287C3F;
+  --paper:#FBFDF8;--field:#FFFFFF;--ink:#14301F;--muted:#557060;--line:#D3E4D6;
+  --navy:#14223D;--navy2:#22365E;--led:#FFC83D;--led-ink:#14223D;
+  --goal:#1E9B4B;--goal-bg:#E3F5E8;--save:#C62F2F;--save-bg:#FCE9E9;--post:#A86B12;--post-bg:#FFF4D9;
+  --ok-bg:#EEF8F0;--focus:#2563EB;--shadow:0 3px 0 rgba(10,40,20,.22);
+  --h0:#F6C9C9;--h1:#FFE3A6;--h2:#CFEBD7;--h3:#8FD3A6;--hna:#EEF2EE;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --grass:#17452A;--grass2:#133B24;
+    --paper:#1A2A20;--field:#223528;--ink:#E8F2EA;--muted:#9FB8A8;--line:#355241;
+    --goal:#4CC27A;--goal-bg:#173F27;--save:#F07B7B;--save-bg:#43211F;--post:#E8B24E;--post-bg:#3F3216;
+    --ok-bg:#1D3326;--shadow:0 3px 0 rgba(0,0,0,.35);
+    --h0:#6B2A2A;--h1:#6A5220;--h2:#2B5A3B;--h3:#2F7A4C;--hna:#26382C;
+  }
+}
+:root[data-theme="dark"]{
+  --grass:#17452A;--grass2:#133B24;
+  --paper:#1A2A20;--field:#223528;--ink:#E8F2EA;--muted:#9FB8A8;--line:#355241;
+  --goal:#4CC27A;--goal-bg:#173F27;--save:#F07B7B;--save-bg:#43211F;--post:#E8B24E;--post-bg:#3F3216;
+  --ok-bg:#1D3326;--shadow:0 3px 0 rgba(0,0,0,.35);
+  --h0:#6B2A2A;--h1:#6A5220;--h2:#2B5A3B;--h3:#2F7A4C;--hna:#26382C;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:"Rubik","Arial Hebrew","Segoe UI",Arial,sans-serif;font-size:16px;line-height:1.5;
+  background:repeating-linear-gradient(180deg,var(--grass) 0 64px,var(--grass2) 64px 128px)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+#app{max-width:1080px;margin:0 auto;padding:14px 14px 40px}
+.board{background:var(--navy);color:#fff;border-radius:20px;padding:16px 18px;border:3px solid var(--navy2);box-shadow:var(--shadow)}
+.brand{font-family:"Secular One","Rubik",sans-serif;font-size:24px;line-height:1.25}
+.sub{opacity:.85;font-size:14px;margin-top:2px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;text-align:center}
+.kpis b{display:block;font-family:"Secular One","Rubik",sans-serif;font-weight:400;font-size:32px;line-height:1.1;color:var(--led);font-variant-numeric:tabular-nums}
+.kpis>div>span{font-size:13px;opacity:.88}
+.kpis b small{font-size:16px}
+.card{background:var(--paper);border-radius:18px;padding:14px 16px;margin-top:14px;box-shadow:var(--shadow)}
+.card h2{margin:0 0 4px;font-size:19px}
+.card .hint{margin:0 0 10px;font-size:14px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid2 .card{margin-top:14px}
+.row{display:flex;align-items:center;gap:10px}
+.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+/* buttons */
+.btn{border:0;border-radius:12px;padding:9px 16px;font-weight:700;background:var(--led);color:var(--led-ink);box-shadow:0 3px 0 #C9971D}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 #C9971D}
+.btn.ghost{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.55);box-shadow:none}
+.btn.line{background:var(--field);color:var(--ink);border:2px solid var(--line);box-shadow:none}
+.btn.danger{background:var(--save);color:#fff;box-shadow:none}
+.btn:disabled{opacity:.5;cursor:default}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.link{background:none;border:0;padding:0;text-decoration:underline;color:inherit}
+/* login */
+.login{max-width:440px;margin:10vh auto 0}
+.login label{display:block;font-weight:700;margin:14px 0 6px}
+.login input[type=password],.login input[type=text]{width:100%;padding:12px;border:2px solid var(--line);border-radius:12px;background:var(--field);font-size:17px;direction:ltr;text-align:left}
+.check{display:flex;gap:8px;align-items:center;margin:10px 0 14px;font-size:15px}
+.msg{min-height:1.5em;margin-top:8px;font-size:15px;color:var(--save)}
+.msg.ok{color:var(--goal)}
+/* activity bars */
+.bars{display:grid;grid-template-columns:repeat(14,1fr);gap:4px;align-items:end;height:150px}
+.bars div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:3px;min-width:0}
+.bars b{font-size:11px;font-weight:600;font-variant-numeric:tabular-nums}
+.bars i{display:block;width:78%;max-width:28px;background:var(--goal);border-radius:5px 5px 0 0;min-height:2px}
+.bars small{font-size:11px;color:var(--muted);white-space:nowrap}
+.bars .today small{color:var(--ink);font-weight:700}
+/* topic bars */
+.tbar{display:grid;grid-template-columns:26px minmax(0,1fr) 48px;gap:4px 8px;align-items:center;padding:7px 0;border-top:1px solid var(--line)}
+.tbar:first-of-type{border-top:0}
+.tbar .ic{font-size:18px;text-align:center}
+.tbar .nm{font-weight:600;font-size:15px;min-width:0}
+.tbar .nm small{display:block;font-weight:400;color:var(--muted);font-size:13px}
+.tbar .pc{font-weight:700;text-align:left;font-variant-numeric:tabular-nums}
+.meter{grid-column:2/4;height:9px;background:var(--hna);border-radius:99px;overflow:hidden}
+.meter span{display:block;height:100%;border-radius:99px}
+.lv0{background:var(--save)}.lv1{background:var(--post)}.lv2{background:#58B878}.lv3{background:var(--goal)}
+.c0{color:var(--save)}.c1{color:var(--post)}.c2,.c3{color:var(--goal)}
+/* players */
+.pbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.pbar input,.pbar select{padding:8px 10px;border:2px solid var(--line);border-radius:10px;background:var(--field)}
+.pbar input{flex:1;min-width:160px}
+.plist{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px}
+.pc-card{display:block;width:100%;text-align:right;background:var(--field);border:2px solid var(--line);border-radius:14px;padding:10px 12px}
+.pc-card:hover{border-color:var(--grass)}
+.pc-top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.pc-name{font-weight:800;font-size:17px;overflow-wrap:anywhere}
+.pc-last{font-size:13px;color:var(--muted);white-space:nowrap}
+.pc-last.idle{color:var(--save);font-weight:600}
+.stats{display:flex;flex-wrap:wrap;gap:4px 14px;margin:6px 0;font-size:14px;font-variant-numeric:tabular-nums}
+.dots{display:flex;gap:3px;align-items:center;font-size:12px;color:var(--muted)}
+.dots i{width:13px;height:13px;border-radius:3px;background:var(--hna);display:inline-block}
+.dots i.a1{background:var(--h2)}.dots i.a2{background:var(--h3)}.dots i.a3{background:var(--goal)}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:99px;padding:1px 9px;background:var(--save-bg);color:var(--save);margin-top:6px}
+.tag.ok{background:var(--goal-bg);color:var(--goal)}
+/* heatmap */
+.hwrap{overflow-x:auto;margin:0 -4px;padding:0 4px}
+table.heat{border-collapse:separate;border-spacing:3px;font-size:13px;font-variant-numeric:tabular-nums}
+.heat th{font-weight:600;padding:2px}
+.heat th.st{font-size:18px;min-width:40px}
+.heat th.who{position:sticky;right:0;background:var(--paper);text-align:right;padding-inline-start:4px;min-width:84px;max-width:120px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:1}
+.heat td{text-align:center;border-radius:6px;padding:6px 2px;min-width:40px}
+.hna{background:var(--hna);color:var(--muted)}.h0{background:var(--h0)}.h1{background:var(--h1)}.h2{background:var(--h2)}.h3{background:var(--h3)}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:13px;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-inline-end:4px}
+/* player page */
+.code{font-family:"Secular One","Rubik",sans-serif;font-size:26px;letter-spacing:2px;color:var(--led);direction:ltr;display:inline-block}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;max-width:340px}
+.cal i{aspect-ratio:1;border-radius:5px;background:var(--hna);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:11px;color:var(--muted)}
+.cal i.a1{background:var(--h2);color:var(--ink)}.cal i.a2{background:var(--h3);color:var(--ink)}.cal i.a3{background:var(--goal);color:#fff}
+.cal i.today{outline:2px solid var(--focus)}
+.weak{margin:2px 0 0;padding:0;list-style:none;font-size:13px;color:var(--save)}
+.log{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid var(--line);font-size:15px}
+.log:first-of-type{border-top:0}
+.foot{margin-top:18px;text-align:center;color:#fff;font-size:14px;opacity:.92}
+.foot .link{margin:0 8px}
+.empty{color:var(--muted);margin:4px 0}
+.keybox{background:var(--post-bg);border-radius:12px;padding:12px;margin-top:10px}
+.keybox .code{color:var(--ink);font-size:18px;letter-spacing:1px;overflow-wrap:anywhere}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.kpis b{font-size:28px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="config.js"></script>
+<script>
+'use strict';
+const CFG=window.LEAGUE_CONFIG||{};
+const KEY_LS='mathLeague.adminKey';
+const ST=[
+ {id:'pv',icon:'🔢',name:'ערך המקום',g:['מספר קודם ועוקב','ממילים למספר','ממספר למילים','הרכבת מספר מספרות נתונות','"מי אני?" – מאות, עשרות, יחידות','בניית מספר לפי ספרה במקום','הגדלה ב-100 / פי 10']},
+ {id:'cmp',icon:'⚖️',name:'השוואה, סדרות וישר המספרים',g:['השוואת מספרים (<, >, =)','השוואה בין מילים למספר','השלמת איבר בסדרה','ניסוח החוקיות של סדרה','קריאת ישר המספרים']},
+ {id:'add',icon:'➕',name:'חיבור וחיסור',g:['חיבור בטור עם העברה','חיסור בטור עם פריטה דרך אפסים','השוואת תרגילים בלי לפתור','חיבור בראש']},
+ {id:'mul',icon:'✖️',name:'כפל',g:['לוח הכפל','כפל בעשרות עגולות','כפל בעזרת חוק הפילוג','כפל בטור','כפל ב-0 וב-1']},
+ {id:'div',icon:'➗',name:'חילוק, אומדן ומתחלקים',g:['חילוק מלוח הכפל','חילוק מעבר ללוח הכפל','אומדן','בחירת מספר שמתחלק ב-2 / ב-5','השלמת ספרה כדי שיתחלק']},
+ {id:'ops',icon:'🧮',name:'סדר פעולות חשבון',g:['חיסור וכפל באותו תרגיל','חילוק וסוגריים','חיבור וכפל באותו תרגיל','סוגריים ואז כפל','כפל וחילוק באותו תרגיל','תרגיל משולב']},
+ {id:'gem',icon:'🔤',name:'גימטריה',g:['פענוח מילה ממספרים','הערך של אות','סכום של מילה']},
+ {id:'word',icon:'🛒',name:'בעיות מילוליות',g:['קנייה – כמה שילמו','חישוב עודף','איזה שטר מספיק','כפל בסיפור (קבוצות)']},
+ {id:'chart',icon:'📊',name:'קריאת דיאגרמה',g:['העמודה הגבוהה ביותר','העמודה הנמוכה ביותר','עמודות שוות','סכום כל העמודות','השוואה בין עמודות']},
+ {id:'geo',icon:'📐',name:'משולשים ומצולעים',g:['סוג משולש לפי הצלעות','סוג משולש לפי הזוויות','מצולע או לא','ספירת קודקודים','זוגות צלעות מקבילות']},
+ {id:'meas',icon:'📏',name:'מידות וזמן',g:['השוואת מידות וזמנים','המרת מטרים לס״מ','התאמת משכי זמן']}
+];
+const STI=Object.fromEntries(ST.map(s=>[s.id,s]));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=s=>document.querySelector(s);
+const app=document.getElementById('app');
+const pct=x=>x==null?'–':Math.round(x*100)+'%';
+const lvl=x=>x==null?-1:x<.5?0:x<.7?1:x<.85?2:3;
+const DOW=['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'],DOWL=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
+const dayKey=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+function lastDays(n){const out=[];for(let i=n-1;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);out.push({key:dayKey(d),d});}return out;}
+const daysAgo=t=>t?Math.round((new Date(dayKey())-new Date(dayKey(new Date(t))))/864e5):null;
+const ago=t=>{const n=daysAgo(t);return n==null?'אף פעם':n<=0?'היום':n===1?'אתמול':`לפני ${n} ימים`;};
+const when=t=>{const d=new Date(t);return `${DOWL[d.getDay()]} ${d.getDate()}.${d.getMonth()+1}, ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;};
+const genLabel=gk=>{const [s,i]=gk.split('.');const st=STI[s];return st?{icon:st.icon,topic:st.name,name:st.g[+i]||'תרגיל'}:null;};
+const firstRate=h=>{const r=h.slice(-4);return r?(r.split('1').length-1)/r.length:1;};
+const isWeak=h=>!!h&&(h.slice(-1)!=='1'||(h.slice(-4).length>=2&&firstRate(h)<.5));
+
+/* ---------- server ---------- */
+async function rpc(fn,args){
+  if(!CFG.supabaseUrl||!CFG.supabaseKey)throw Object.assign(new Error('config'),{code:'config'});
+  const h={'Content-Type':'application/json',apikey:CFG.supabaseKey};
+  if(/^eyJ/.test(CFG.supabaseKey))h.Authorization='Bearer '+CFG.supabaseKey;
+  let r;
+  try{r=await fetch(String(CFG.supabaseUrl).replace(/\/+$/,'')+'/rest/v1/rpc/'+fn,{method:'POST',headers:h,body:JSON.stringify(args)});}
+  catch(e){throw Object.assign(new Error('network'),{code:'net'});}
+  const t=await r.text();
+  if(!r.ok){let m='';try{m=JSON.parse(t).message||'';}catch(e){}throw Object.assign(new Error(m||('http '+r.status)),{code:(r.status===401||r.status===403||m==='unauthorized')?'auth':'http'});}
+  return t?JSON.parse(t):null;
+}
+const getKey=()=>{try{return sessionStorage.getItem(KEY_LS)||localStorage.getItem(KEY_LS)||'';}catch(e){return '';}};
+function setKey(k,remember){try{sessionStorage.setItem(KEY_LS,k);if(remember)localStorage.setItem(KEY_LS,k);else localStorage.removeItem(KEY_LS);}catch(e){}}
+function clearKey(){try{sessionStorage.removeItem(KEY_LS);localStorage.removeItem(KEY_LS);}catch(e){}}
+
+/* ---------- data ---------- */
+const num=(x,lo,hi)=>{x=Math.floor(Number(x));return Number.isFinite(x)?Math.min(hi,Math.max(lo,x)):lo;};
+function clean(row){
+  const o=(row&&typeof row.data==='object'&&row.data)||{};
+  const P={code:String(row.code||'').slice(0,20),created:Date.parse(row.created_at)||0,updated:Date.parse(row.updated_at)||0,
+    name:String(o.name||'').trim().slice(0,20)||'ללא שם',best:{},cup:o.cup==null?null:num(o.cup,0,12),st:{},gen:{},log:[],days:{}};
+  for(const s of ST){
+    if(o.best&&o.best[s.id]!=null)P.best[s.id]=num(o.best[s.id],0,3);
+    const x=o.st&&o.st[s.id];if(x&&typeof x==='object'){const k=num(x.k,0,1e7);P.st[s.id]={k,f:Math.min(k,num(x.f,0,1e7)),g:num(x.g,0,1e6),t:num(x.t,0,4e12)};}
+  }
+  for(const [k,v] of Object.entries(o.gen||{}))if(/^[a-z]+\.\d{1,2}$/.test(k)&&genLabel(k)&&v&&/^[01r]{0,8}$/.test(v.h||''))P.gen[k]={n:num(v.n,0,1e6),h:v.h||''};
+  (Array.isArray(o.log)?o.log:[]).slice(0,80).forEach(e=>{if(e&&['station','cup','redo'].includes(e.m))P.log.push({t:num(e.t,0,4e12),m:e.m,s:STI[e.s]?e.s:null,go:num(e.go,0,99),n:num(e.n,0,99),tr:num(e.tr,0,3)});});
+  for(const [k,v] of Object.entries(o.days||{}))if(/^\d{4}-\d{2}-\d{2}$/.test(k))P.days[k]=num(v,0,1e6);
+  let k=0,f=0;for(const x of Object.values(P.st)){k+=x.k;f+=x.f;}
+  P.kicks=k;P.acc=k?f/k:null;
+  P.trophies=Object.values(P.best).reduce((a,b)=>a+b,0);
+  P.last=Math.max(0,...Object.values(P.st).map(x=>x.t),...P.log.map(e=>e.t))||0;
+  const w=lastDays(7);P.act7=w.map(x=>P.days[x.key]||0);P.week=P.act7.reduce((a,b)=>a+b,0);
+  P.activeDays=Object.values(P.days).filter(v=>v>0).length;
+  let wt=null;for(const s of ST){const x=P.st[s.id];if(x&&x.k>=3){const a=x.f/x.k;if(!wt||a<wt.a)wt={id:s.id,a};}}
+  P.weakTopic=wt&&wt.a<.8?wt:null;
+  P.weakTypes=Object.keys(P.gen).filter(k=>isWeak(P.gen[k].h));
+  return P;
+}
+function groupStats(players){
+  const topics=ST.map(s=>{let k=0,f=0,n=0;players.forEach(p=>{const x=p.st[s.id];if(x&&x.k){k+=x.k;f+=x.f;n++;}});return {s,k,f,n,acc:k?f/k:null};});
+  const types={};
+  players.forEach(p=>{for(const [gk,v] of Object.entries(p.gen)){const t=types[gk]||(types[gk]={gk,att:0,ones:0,weak:0,players:0});t.att+=v.h.length;t.ones+=v.h.split('1').length-1;t.players++;if(isWeak(v.h))t.weak++;}});
+  const hardTypes=Object.values(types).filter(t=>t.att>=6).map(t=>Object.assign(t,{rate:t.ones/t.att})).sort((a,b)=>a.rate-b.rate).slice(0,6);
+  const days=lastDays(14).map(x=>({...x,kicks:players.reduce((n,p)=>n+(p.days[x.key]||0),0),active:players.filter(p=>p.days[x.key]).length}));
+  const kicks=players.reduce((n,p)=>n+p.kicks,0),firsts=players.reduce((n,p)=>n+Math.round((p.acc||0)*p.kicks),0);
+  return {topics,hardTypes,days,kicks,acc:kicks?firsts/kicks:null,active7:players.filter(p=>p.week>0).length,week:players.reduce((n,p)=>n+p.week,0)};
+}
+
+/* ---------- state ---------- */
+const S={players:[],loadedAt:0,sort:'last',q:'',view:'main'};
+async function load(){
+  const rows=await rpc('admin_overview',{p_key:getKey()});
+  S.players=(Array.isArray(rows)?rows:[]).map(clean);S.loadedAt=Date.now();
+}
+
+/* ---------- screens ---------- */
+function renderLogin(msg){
+  S.view='login';
+  const noCfg=!CFG.supabaseUrl||!CFG.supabaseKey;
+  app.innerHTML=`<section class="login"><div class="board"><div class="brand">📊 לוח המאמן</div><div class="sub">ליגת המספרים – מעקב אחרי ההתקדמות של השחקנים</div></div>
+  <div class="card">
+    ${noCfg?'<p class="msg">הקובץ config.js חסר או ריק, ולכן אין חיבור לשרת. לוח המאמן צריך לשבת באותה תיקייה כמו המשחק.</p>':''}
+    <form id="lf" autocomplete="on"><input type="text" name="username" value="מאמן" autocomplete="username" hidden>
+    <label for="k">מפתח מנהל</label>
+    <input id="k" type="password" autocomplete="current-password" spellcheck="false" placeholder="LMA-…" value="">
+    <label class="check"><input type="checkbox" id="rem" checked> לזכור במכשיר הזה</label>
+    <button class="btn" id="go" type="submit">כניסה</button></form>
+    <div class="msg" id="lm" aria-live="polite">${msg?esc(msg):''}</div>
+  </div></section>`;
+  $('#lf').onsubmit=async e=>{
+    e.preventDefault();const k=$('#k').value.trim(),m=$('#lm');
+    if(!k){m.textContent='הדביקו את מפתח המנהל.';return;}
+    $('#go').disabled=true;m.textContent='בודק…';m.classList.remove('ok');
+    setKey(k,$('#rem').checked);
+    try{await load();renderMain();}
+    catch(err){$('#go').disabled=false;clearKey();m.textContent=err.code==='auth'?'המפתח לא נכון.':err.code==='net'?'אין חיבור לשרת כרגע. נסו שוב בעוד רגע.':'משהו השתבש: '+err.message;}
+  };
+  $('#k').focus();
+}
+function kpi(v,l){return `<div><b>${v}</b><span>${l}</span></div>`;}
+function renderMain(){
+  S.view='main';
+  const P=S.players,G=groupStats(P);
+  const q=S.q.trim(),sorters={last:(a,b)=>b.last-a.last,name:(a,b)=>a.name.localeCompare(b.name,'he'),week:(a,b)=>b.week-a.week,acc:(a,b)=>(a.acc??2)-(b.acc??2),trophies:(a,b)=>b.trophies-a.trophies};
+  const list=P.filter(p=>!q||p.name.includes(q)||p.code.includes(q.toUpperCase())).sort(sorters[S.sort]);
+  const maxDay=Math.max(10,...G.days.map(d=>d.kicks));
+  const topics=G.topics.filter(t=>t.k).sort((a,b)=>a.acc-b.acc);
+  app.innerHTML=`
+  <header class="board">
+    <div class="brand">📊 לוח המאמן</div>
+    <div class="sub">ליגת המספרים. עודכן ${new Date(S.loadedAt).toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})}</div>
+    <div class="kpis">${kpi(P.length,'שחקנים')}${kpi(G.active7,'פעילים ב-7 ימים')}${kpi(G.week,'בעיטות ב-7 ימים')}${kpi(`<span dir="ltr">${pct(G.acc)}</span>`,'גול בניסיון ראשון')}</div>
+    <div class="tools"><button class="btn" id="refresh">רענון</button><button class="btn ghost" id="csv">ייצוא לאקסל</button></div>
+  </header>
+  ${P.length?`
+  <section class="card"><h2>פעילות – שבועיים אחרונים</h2><p class="hint">בעיטות של כל השחקנים ביחד, בכל יום.</p>
+    <div class="bars">${G.days.map((d,i)=>`<div class="${i===13?'today':''}" title="${esc(`${d.d.getDate()}.${d.d.getMonth()+1}: ${d.kicks} בעיטות, ${d.active} שחקנים`)}"><b>${d.kicks||''}</b><i style="height:${Math.round(d.kicks/maxDay*100)}px"></i><small>${i===13?'היום':DOW[d.d.getDay()]}</small></div>`).join('')}</div>
+  </section>
+  <div class="grid2">
+    <section class="card"><h2>איפה הקבוצה מתקשה</h2><p class="hint">אחוז הגולים בניסיון ראשון בכל נושא, מהחלש לחזק.</p>
+      ${topics.length?topics.map(t=>`<div class="tbar"><span class="ic" aria-hidden="true">${t.s.icon}</span><span class="nm">${t.s.name}<small>${t.n} שחקנים, ${t.k} בעיטות</small></span><span class="pc c${lvl(t.acc)}" dir="ltr">${pct(t.acc)}</span><div class="meter"><span class="lv${lvl(t.acc)}" style="width:${Math.round(t.acc*100)}%"></span></div></div>`).join(''):'<p class="empty">עוד אין מספיק בעיטות.</p>'}
+    </section>
+    <section class="card"><h2>סוגי התרגילים הקשים ביותר</h2><p class="hint">לפי הניסיונות האחרונים של כל שחקן. שווה לתרגל אותם בכיתה או בבית.</p>
+      ${G.hardTypes.length?G.hardTypes.map(t=>{const L=genLabel(t.gk);return `<div class="tbar"><span class="ic" aria-hidden="true">${L.icon}</span><span class="nm">${esc(L.name)}<small>${L.topic}${t.weak?`. ${t.weak===1?'שחקן אחד צריך':t.weak+' שחקנים צריכים'} חיזוק`:''}</small></span><span class="pc c${lvl(t.rate)}" dir="ltr">${pct(t.rate)}</span><div class="meter"><span class="lv${lvl(t.rate)}" style="width:${Math.round(t.rate*100)}%"></span></div></div>`;}).join(''):'<p class="empty">עוד אין מספיק בעיטות.</p>'}
+    </section>
+  </div>`:''}
+  <section class="card"><h2>שחקנים</h2>
+    ${P.length?`<div class="pbar"><input id="q" type="search" placeholder="חיפוש לפי שם או קוד" value="${esc(S.q)}" aria-label="חיפוש שחקן">
+      <select id="sort" aria-label="מיון">${[['last','פעילות אחרונה'],['name','שם'],['week','הכי פעילים השבוע'],['acc','צריכים עזרה קודם'],['trophies','גביעים']].map(([v,l])=>`<option value="${v}"${S.sort===v?' selected':''}>${l}</option>`).join('')}</select></div>
+    <div class="plist">${list.map(cardHTML).join('')||'<p class="empty">אין שחקן שמתאים לחיפוש.</p>'}</div>`
+    :'<p class="empty">עוד אין שחקנים. שלחו את הקישור לאתר, וכל ילד שנכנס יופיע כאן.</p>'}
+  </section>
+  ${P.length?heatHTML(list):''}
+  <footer class="foot"><button class="link" id="rot">החלפת מפתח המנהל</button><button class="link" id="out">יציאה</button></footer>`;
+  $('#refresh').onclick=refresh;$('#csv').onclick=exportCSV;$('#out').onclick=()=>{clearKey();S.players=[];renderLogin();};
+  $('#rot').onclick=rotateKey;
+  const qi=$('#q');if(qi){qi.oninput=()=>{S.q=qi.value;const pos=qi.selectionStart;renderMain();const n=$('#q');n.focus();n.setSelectionRange(pos,pos);};}
+  const so=$('#sort');if(so)so.onchange=()=>{S.sort=so.value;renderMain();};
+  app.querySelectorAll('[data-code]').forEach(b=>b.onclick=()=>renderPlayer(b.dataset.code));
+}
+function cardHTML(p){
+  const n=daysAgo(p.last),idle=n==null||n>7;
+  return `<button class="pc-card" data-code="${esc(p.code)}"><div class="pc-top"><span class="pc-name">${esc(p.name)}</span><span class="pc-last${idle?' idle':''}">${p.last?ago(p.last):'עוד לא שיחק'}</span></div>
+    <div class="stats"><span>🏆 ${p.trophies}/33</span><span>⚽ ${p.kicks} בעיטות</span><span>🎯 <span dir="ltr">${pct(p.acc)}</span></span>${p.cup!=null?`<span>גמר ${p.cup}/12</span>`:''}</div>
+    <div class="dots" aria-label="פעילות בשבוע האחרון">${p.act7.map(v=>`<i class="${v?v<8?'a1':v<20?'a2':'a3':''}"></i>`).join('')}<span>&nbsp;7 ימים</span></div>
+    ${p.weakTopic?`<span class="tag">לחזק: ${STI[p.weakTopic.id].name}</span>`:p.kicks>=10?'<span class="tag ok">בלי נושא חלש בולט</span>':''}</button>`;
+}
+function heatHTML(list){
+  return `<section class="card"><h2>מפת חום</h2><p class="hint">אחוז הגולים בניסיון ראשון לכל שחקן בכל נושא. אפשר לגלול הצידה.</p>
+  <div class="hwrap"><table class="heat"><thead><tr><th class="who">שחקן</th>${ST.map(s=>`<th class="st" title="${s.name}" scope="col">${s.icon}</th>`).join('')}</tr></thead>
+  <tbody>${list.map(p=>`<tr><th class="who" scope="row">${esc(p.name)}</th>${ST.map(s=>{const x=p.st[s.id];if(!x||!x.k)return '<td class="hna">–</td>';const a=x.f/x.k;return `<td class="h${lvl(a)}" title="${esc(`${p.name} – ${s.name}: ${x.k} בעיטות`)}">${Math.round(a*100)}</td>`;}).join('')}</tr>`).join('')}</tbody></table></div>
+  <div class="legend"><span><i class="h0"></i>מתחת ל-50%</span><span><i class="h1"></i>50–69%</span><span><i class="h2"></i>70–84%</span><span><i class="h3"></i>85% ומעלה</span><span><i class="hna"></i>עוד לא שיחק</span></div></section>`;
+}
+function renderPlayer(code){
+  const p=S.players.find(x=>x.code===code);if(!p)return renderMain();
+  S.view='player';window.scrollTo(0,0);
+  const cal=lastDays(28),link=new URL('./',location.href).href+'#p='+p.code;
+  app.innerHTML=`<header class="board">
+    <div class="brand">${esc(p.name)}</div>
+    <div class="sub">קוד שחקן: <span class="code">${esc(p.code)}</span></div>
+    <div class="kpis">${kpi(p.trophies+'<small>/33</small>','גביעים')}${kpi(p.kicks,'בעיטות')}${kpi(`<span dir="ltr">${pct(p.acc)}</span>`,'גול בניסיון ראשון')}${kpi(p.cup==null?'–':p.cup+'<small>/12</small>','שיא בגמר')}</div>
+    <div class="tools"><button class="btn" id="back">חזרה לכל השחקנים</button><button class="btn ghost" id="cpl">העתקת הקישור האישי</button></div>
+    <div class="msg ok" id="cm" aria-live="polite" style="color:#9FE3B5"></div>
+  </header>
+  <div class="grid2">
+    <section class="card"><h2>ימי אימון – 4 שבועות</h2><p class="hint">${p.activeDays} ימי אימון בסך הכול. שיחק לאחרונה: ${ago(p.last)}.</p>
+      <div class="cal">${cal.map((x,i)=>{const v=p.days[x.key]||0;return `<i class="${v?v<8?'a1':v<20?'a2':'a3':''}${i===27?' today':''}" title="${x.d.getDate()}.${x.d.getMonth()+1}: ${v} בעיטות">${v||''}</i>`;}).join('')}</div>
+    </section>
+    <section class="card"><h2>משחקים אחרונים</h2>
+      ${p.log.length?p.log.slice(0,10).map(e=>`<div class="log"><span>${e.m==='cup'?'🏆 גמר הגביע':e.m==='redo'?'🔁 חזרה על טעויות':e.s?STI[e.s].icon+' '+STI[e.s].name:''}<br><small class="muted">${when(e.t)}</small></span><b class="num" dir="ltr">${e.go}/${e.n}</b></div>`).join(''):'<p class="empty">עוד אין משחקים.</p>'}
+    </section>
+  </div>
+  <section class="card"><h2>לפי נושא</h2><p class="hint">בכל נושא: אחוז הגולים בניסיון ראשון, ומתחת – סוגי התרגילים שעדיין צריך לחזק.</p>
+    ${ST.map(s=>{const x=p.st[s.id],a=x&&x.k?x.f/x.k:null,w=p.weakTypes.filter(k=>k.startsWith(s.id+'.')).map(k=>genLabel(k).name);
+      return `<div class="tbar"><span class="ic" aria-hidden="true">${s.icon}</span><span class="nm">${s.name}<small>${x&&x.k?`${x.k} בעיטות. ${'🏆'.repeat(p.best[s.id]||0)||'בלי גביע עדיין'}`:'עוד לא שיחק'}</small>${w.length?`<ul class="weak">${w.map(n=>`<li>לחזק: ${esc(n)}</li>`).join('')}</ul>`:''}</span><span class="pc c${lvl(a)}" dir="ltr">${pct(a)}</span><div class="meter"><span class="lv${lvl(a)}" style="width:${a==null?0:Math.round(a*100)}%"></span></div></div>`;}).join('')}
+  </section>
+  <section class="card"><h2>ניהול</h2><p class="hint">ילד איבד את הקוד? שלחו לו את הקישור האישי מלמעלה. מחיקה מוחקת את כל ההתקדמות של השחקן ואי אפשר לבטל אותה.</p>
+    <button class="btn danger" id="del">מחיקת השחקן</button><div class="msg" id="dm" aria-live="polite"></div></section>`;
+  $('#back').onclick=renderMain;
+  $('#cpl').onclick=async()=>{const ok=await copy(link);$('#cm').textContent=ok?'הקישור הועתק ✓':link;};
+  $('#del').onclick=async()=>{
+    if(!confirm(`למחוק את ${p.name} (${p.code})?\nכל ההתקדמות שלו תימחק, ואי אפשר לבטל.`))return;
+    $('#del').disabled=true;
+    try{await rpc('admin_delete_player',{p_key:getKey(),p_code:p.code});await load();renderMain();}
+    catch(err){$('#del').disabled=false;$('#dm').textContent=err.code==='auth'?'המפתח כבר לא תקף. היכנסו שוב.':'המחיקה נכשלה. נסו שוב.';}
+  };
+}
+async function copy(text){
+  try{await navigator.clipboard.writeText(text);return true;}catch(e){}
+  const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();
+  let ok=false;try{ok=document.execCommand('copy');}catch(e){}ta.remove();return ok;
+}
+async function refresh(){
+  const b=$('#refresh');if(b){b.disabled=true;b.textContent='מרענן…';}
+  try{await load();if(S.view==='main')renderMain();}
+  catch(err){if(err.code==='auth'){clearKey();return renderLogin('המפתח כבר לא תקף. היכנסו שוב.');}if(b){b.disabled=false;b.textContent='אין חיבור – נסו שוב';}}
+}
+function exportCSV(){
+  const cell=v=>{let s=String(v??'');if(/^[=+\-@\t\r]/.test(s))s="'"+s;return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;};
+  const head=['שם','קוד שחקן','שיחק לאחרונה','בעיטות','בעיטות ב-7 ימים','ימי אימון','גול בניסיון ראשון %','גביעים','שיא בגמר','נושא לחיזוק',...ST.map(s=>s.name+' %')];
+  const rows=S.players.map(p=>[p.name,p.code,p.last?new Date(p.last).toLocaleDateString('he-IL'):'',p.kicks,p.week,p.activeDays,p.acc==null?'':Math.round(p.acc*100),p.trophies,p.cup??'',p.weakTopic?STI[p.weakTopic.id].name:'',
+    ...ST.map(s=>{const x=p.st[s.id];return x&&x.k?Math.round(x.f/x.k*100):'';})]);
+  const csv='\ufeff'+[head,...rows].map(r=>r.map(cell).join(',')).join('\r\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download=`math-league-${dayKey()}.csv`;
+  document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
+}
+async function rotateKey(){
+  if(!confirm('ליצור מפתח מנהל חדש?\nהמפתח הנוכחי יפסיק לעבוד בכל המכשירים.'))return;
+  const AL='0123456789ABCDEFGHJKMNPQRSTVWXYZ',b=new Uint8Array(32);crypto.getRandomValues(b);
+  let s='';for(const x of b)s+=AL[x&31];
+  const nk='LMA-'+s.match(/.{4}/g).join('-');
+  const hash=[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(nk)))].map(x=>x.toString(16).padStart(2,'0')).join('');
+  try{await rpc('admin_rotate_key',{p_key:getKey(),p_new_hash:hash});}
+  catch(err){alert(err.code==='auth'?'המפתח הנוכחי לא תקף.':'ההחלפה נכשלה, המפתח הישן עדיין בתוקף.');return;}
+  let remembered=false;try{remembered=!!localStorage.getItem(KEY_LS);}catch(e){}
+  setKey(nk,remembered);
+  const box=document.createElement('section');box.className='card';
+  box.innerHTML=`<h2>המפתח החדש</h2><p class="hint">שמרו אותו במקום בטוח, למשל במנהל הסיסמאות. הוא לא יוצג שוב, והמפתח הישן כבר לא עובד.</p>
+    <div class="keybox"><span class="code">${nk}</span></div><div class="tools"><button class="btn" id="cpk">העתקת המפתח</button></div><div class="msg ok" id="km"></div>`;
+  app.prepend(box);window.scrollTo(0,0);
+  $('#cpk').onclick=async()=>{$('#km').textContent=(await copy(nk))?'המפתח הועתק ✓':'סמנו את המפתח והעתיקו ידנית.';};
+}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&S.view==='main'&&Date.now()-S.loadedAt>60000)refresh();});
+(async()=>{
+  if(!getKey())return renderLogin();
+  app.innerHTML='<div class="board login"><div class="brand">📊 לוח המאמן</div><div class="sub">טוען…</div></div>';
+  try{await load();renderMain();}
+  catch(err){if(err.code==='auth')clearKey();renderLogin(err.code==='auth'?'':err.code==='net'?'אין חיבור לשרת כרגע. נסו שוב בעוד רגע.':'');}
+})();
+</script>
+</body>
+</html>
