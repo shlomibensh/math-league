@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ליגת המספרים – אימון למבדק כיתה ד׳</title>
+<meta name="theme-color" content="#14223D">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ליגת המספרים">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;800&family=Secular+One&display=swap" rel="stylesheet">
+<style>
+:root{
+  --nbpaper:#FFFFFF;--sq:#CCDEF3;--slot:#9DB9DD;--pen:#1D4ED8;
+  --grass:#2F8A47;--grass2:#287C3F;
+  --paper:#FBFDF8;--field:#FFFFFF;--ink:#14301F;--muted:#557060;--line:#D3E4D6;
+  --navy:#14223D;--navy2:#22365E;--led:#FFC83D;--led-edge:#C9971D;--led-ink:#14223D;
+  --goal:#1E9B4B;--goal-bg:#E3F5E8;--save:#D23B3B;--save-bg:#FCE9E9;--post:#B7791F;--post-bg:#FFF4D9;
+  --bar:#3C7BD9;--vdot:#2563EB;--focus:#2563EB;
+  --shadow:0 3px 0 rgba(10,40,20,.22);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --nbpaper:#15251B;--sq:#2B4658;--slot:#4E7292;--pen:#8FB5FF;
+    --grass:#17452A;--grass2:#133B24;
+    --paper:#1A2A20;--field:#223528;--ink:#E8F2EA;--muted:#9FB8A8;--line:#355241;
+    --goal-bg:#173F27;--save-bg:#43211F;--post-bg:#3F3216;
+    --bar:#6FA1F0;--vdot:#7AA7FF;--shadow:0 3px 0 rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --nbpaper:#15251B;--sq:#2B4658;--slot:#4E7292;--pen:#8FB5FF;
+  --grass:#17452A;--grass2:#133B24;
+  --paper:#1A2A20;--field:#223528;--ink:#E8F2EA;--muted:#9FB8A8;--line:#355241;
+  --goal-bg:#173F27;--save-bg:#43211F;--post-bg:#3F3216;
+  --bar:#6FA1F0;--vdot:#7AA7FF;--shadow:0 3px 0 rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;min-height:100vh;color:var(--ink);
+  font-family:"Rubik","Arial Hebrew","Segoe UI",Arial,sans-serif;font-size:17px;line-height:1.55;
+  background-color:var(--grass);
+  background-image:repeating-linear-gradient(180deg,var(--grass) 0 72px,var(--grass2) 72px 144px);
+}
+#app{max-width:560px;margin:0 auto;padding:14px 14px 48px}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.m{font-variant-numeric:tabular-nums;font-weight:700;unicode-bidi:isolate}
+img,svg{max-width:100%}
+
+/* scoreboard */
+.board{background:var(--navy);color:#fff;border-radius:18px;padding:14px 18px;border:3px solid var(--navy2);box-shadow:var(--shadow)}
+.brand{font-family:"Secular One","Rubik",sans-serif;font-size:26px;line-height:1.2}
+.board-row{display:flex;justify-content:space-between;align-items:flex-end;margin-top:6px;gap:12px}
+.who{font-size:16px;opacity:.85}
+.led{font-family:"Secular One","Rubik",sans-serif;color:var(--led);text-shadow:0 0 14px rgba(255,200,61,.45);font-size:34px;line-height:1;font-variant-numeric:tabular-nums;direction:ltr}
+.led small{font-size:18px;opacity:.75}
+.howto{color:#fff;font-size:15px;margin:12px 4px}
+.cup{display:block;width:100%;text-align:right;margin:4px 0 16px;padding:14px 18px;border:0;border-bottom:4px solid var(--led-edge);border-radius:16px;background:var(--led);color:var(--led-ink)}
+.cup-t{display:block;font-family:"Secular One","Rubik",sans-serif;font-size:24px;line-height:1.2}
+.cup-s{display:block;font-size:14px;margin-top:2px}
+
+/* league table */
+.league{background:var(--paper);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+.league-head{display:flex;justify-content:space-between;padding:8px 18px;background:var(--navy);color:#fff;font-size:14px}
+.row{display:flex;align-items:center;gap:12px;width:100%;padding:13px 18px;border:0;border-top:1px solid var(--line);background:transparent;color:inherit;text-align:right}
+.row:nth-of-type(even){background:var(--field)}
+.row:active{filter:brightness(.97)}
+.row .ic{font-size:24px;width:30px;text-align:center;flex:none}
+.row .nm{flex:1;font-weight:600}
+.tr{white-space:nowrap;letter-spacing:1px;font-size:15px;flex:none}
+.tr .off{opacity:.2;filter:grayscale(1)}
+.foot{color:#fff;font-size:13px;margin:16px 6px;opacity:.9}
+.link{background:none;border:0;color:#fff;text-decoration:underline;padding:6px 0;margin-inline-end:14px;font-size:13px}
+
+/* game */
+.top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.exit{flex:none;width:44px;height:44px;border:0;border-radius:12px;background:rgba(255,255,255,.18);color:#fff;font-size:18px}
+.score{flex:1;display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--navy);color:#fff;border-radius:14px;padding:6px 14px;border:3px solid var(--navy2)}
+.score .t{font-size:14px;max-width:34%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.score .d{font-family:"Secular One","Rubik",sans-serif;font-size:32px;line-height:1.1;color:var(--led);text-shadow:0 0 12px rgba(255,200,61,.45);letter-spacing:3px}
+.score .d b{font-weight:400;display:inline-block}
+.score .d b.bump{animation:bump .5s ease-out}
+@keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.5)}100%{transform:scale(1)}}
+.kicks{display:flex;gap:7px;justify-content:center;margin:0 0 12px;flex-wrap:wrap}
+.kicks i{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.55)}
+.kicks i.c{border-color:var(--led);box-shadow:0 0 0 2px rgba(255,200,61,.35)}
+.kicks i.g{background:#fff;border-color:#fff}
+.kicks i.s{background:var(--save);border-color:var(--save)}
+
+.card{background:var(--paper);border-radius:18px;padding:16px 16px 18px;box-shadow:var(--shadow)}
+.q-meta{font-size:14px;color:var(--muted);margin-bottom:6px}
+.q-prompt{font-size:19px;font-weight:500}
+.q-visual{margin:12px 0 4px;display:flex;justify-content:center;overflow-x:auto;color:var(--ink)}
+.q-visual svg{height:auto}
+.ans{display:flex;gap:8px;margin-top:14px}
+.ans input{flex:1;min-width:0;font:inherit;font-size:22px;font-weight:700;padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:var(--field);color:var(--ink)}
+.ans input:disabled{opacity:.7}
+.kick{flex:none;background:var(--led);color:var(--led-ink);border:0;border-bottom:4px solid var(--led-edge);border-radius:12px;padding:10px 18px;font-weight:800;font-size:18px}
+.kick:disabled{opacity:.5}
+.kick.wide{width:100%;padding:14px}
+.ghost{width:100%;padding:13px;border-radius:12px;border:2px solid rgba(255,255,255,.7);background:transparent;color:#fff;font-weight:700;margin-top:10px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.opts.wide{grid-template-columns:1fr}
+.opts.sym{grid-template-columns:repeat(3,1fr)}
+.opt{min-height:54px;font-size:19px;font-weight:700;background:var(--field);color:var(--ink);border:2px solid var(--line);border-radius:12px;padding:8px 10px}
+.opts.wide .opt{font-size:17px;text-align:right}
+.opts.sym .opt{font-size:30px;line-height:1}
+.opt.right{background:var(--goal-bg);border-color:var(--goal)}
+.opt.wrong{background:var(--save-bg);border-color:var(--save)}
+.opt:disabled{cursor:default}
+.cmpx{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin:14px 0 4px;font-size:22px;font-weight:700;font-variant-numeric:tabular-nums}
+.cmpx .w{font-size:17px;font-weight:600}
+.cbox{width:52px;height:52px;flex:none;border:3px solid var(--ink);border-radius:10px;display:grid;place-items:center;font-size:30px;line-height:1}
+.cbox.ok{border-color:var(--goal);color:var(--goal)}
+.cbox.no{border-color:var(--save);color:var(--save)}
+.hint-btn{margin-top:12px;background:none;border:0;color:var(--muted);font-size:15px;text-decoration:underline;padding:6px 0}
+.hint{margin-top:6px;background:var(--post-bg);border-radius:12px;padding:10px 12px;font-size:16px}
+.fb{margin-top:12px}
+.panel{border-radius:12px;padding:12px 14px;font-size:16px}
+.panel h3{margin:0 0 4px;font-family:"Secular One","Rubik",sans-serif;font-size:22px;font-weight:400;line-height:1.3}
+.panel.goal{background:var(--goal-bg);border-inline-start:6px solid var(--goal)}
+.panel.save{background:var(--save-bg);border-inline-start:6px solid var(--save)}
+.panel.post{background:var(--post-bg);border-inline-start:6px solid var(--post)}
+.explain{margin-top:8px}
+.next{margin-top:12px}
+
+.boxed{display:inline-block;direction:ltr;unicode-bidi:isolate;border:2px solid var(--ink);border-radius:6px;padding:0 6px;font-weight:700;font-variant-numeric:tabular-nums}
+.words{margin-top:8px;font-size:20px;font-weight:700;background:var(--field);border:2px dashed var(--line);padding:10px 12px;border-radius:12px}
+.seq{margin-top:10px;font-size:22px;text-align:center}
+.big{font-size:30px;font-weight:800;text-align:center;margin-top:8px}
+.blank{display:inline-block;min-width:26px;border-bottom:3px solid var(--ink);margin-inline-start:2px}
+.vert{font-size:26px;font-weight:700;border-collapse:collapse;margin:8px auto;font-variant-numeric:tabular-nums}
+.vert td{width:24px;height:34px;text-align:center;padding:0 1px}
+.vert tr.line td{border-top:3px solid var(--ink);height:8px}
+.placetab{border-collapse:collapse;margin:8px 0;font-size:15px}
+.placetab th,.placetab td{border:1px solid var(--line);padding:3px 9px;text-align:center}
+.placetab td{font-size:19px;font-weight:700}
+.gem{display:flex;gap:10px;justify-content:center;direction:rtl;flex-wrap:wrap}
+.gcell{display:flex;flex-direction:column;align-items:center;gap:4px}
+.gblank{width:38px;height:36px;border-bottom:3px solid var(--ink)}
+.gnum{font-weight:700;font-size:18px}
+.gtable{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-top:8px;font-size:14px}
+.gtable span{background:var(--field);border-radius:6px;padding:3px 0;text-align:center;white-space:nowrap}
+.gtable b{margin-inline-end:4px;font-size:16px}
+.bigl{font-size:28px;font-weight:800;line-height:1}
+.ct{text-align:center;font-weight:600;font-size:15px;margin-bottom:4px}
+.qv-col{display:flex;flex-direction:column;align-items:center}
+svg .shape,svg .shape *{fill:none;stroke:currentColor;stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+svg .tick{stroke:currentColor;stroke-width:2}
+svg .ra{fill:none;stroke:currentColor;stroke-width:2}
+svg .grid{stroke:var(--line);stroke-width:1}
+svg .bar{fill:var(--bar)}
+svg .dot{fill:var(--save)}
+svg .dotq{fill:var(--save)}
+svg .vdot{fill:var(--vdot)}
+
+/* end screens */
+.final{text-align:center}
+.final .brand{font-size:20px}
+.final-score{display:flex;justify-content:center;align-items:center;gap:16px;margin:10px 0}
+.final-score .t{font-size:15px;opacity:.85;max-width:30%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.final-score .d{font-family:"Secular One","Rubik",sans-serif;font-size:56px;line-height:1;color:var(--led);text-shadow:0 0 16px rgba(255,200,61,.5);letter-spacing:4px}
+.trophies.big{font-size:40px;letter-spacing:6px}
+.rec{color:var(--led);font-weight:700}
+.endbtns{margin-top:14px}
+.practice{background:var(--paper);border-radius:18px;padding:14px 16px;margin-top:14px;box-shadow:var(--shadow)}
+.practice h2{margin:0 0 8px;font-size:18px}
+.practice .row{border-top:1px solid var(--line);padding:11px 4px}
+
+/* name screen */
+.kickoff{background:var(--paper);border-radius:22px;padding:28px 20px 22px;margin-top:10vh;box-shadow:var(--shadow);text-align:center}
+.kickoff .ballbig{font-size:64px;line-height:1}
+.kickoff h1{font-family:"Secular One","Rubik",sans-serif;font-weight:400;font-size:36px;margin:8px 0 4px}
+.kickoff p{margin:0 0 18px;color:var(--muted)}
+.kickoff label{display:block;font-weight:700;text-align:right}
+
+/* column notebook — squared paper, pupil writes in blue pen */
+.nbwrap{display:flex;justify-content:center;overflow-x:auto;margin:14px 0 4px}
+.nb{--c:44px;flex:none;display:grid;grid-template-columns:repeat(var(--cols),var(--c));grid-auto-rows:var(--c);
+  background-color:var(--nbpaper);
+  background-image:linear-gradient(var(--sq) 1px,transparent 1px),linear-gradient(90deg,var(--sq) 1px,transparent 1px);
+  background-size:var(--c) var(--c);border-right:1px solid var(--sq);border-bottom:1px solid var(--sq);color:var(--ink)}
+.nb.show{--c:34px;margin:4px 0}
+.scr .nb{--c:40px}
+.nc{display:grid;place-items:center;min-width:0;font-size:calc(var(--c)*.6);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.nc.hw{place-items:end center;padding-bottom:3px}
+.nc.pen{color:var(--pen)}
+.nc.hw.pen{font-size:calc(var(--c)*.42)}
+.nc.hw.pen.two{font-size:calc(var(--c)*.34)}
+.nc.rl{box-shadow:inset 0 3px 0 var(--ink)}
+.dg.struck{color:var(--muted);text-decoration:line-through;text-decoration-thickness:3px;text-decoration-color:var(--pen)}
+.cell{font:inherit;font-weight:700;font-variant-numeric:tabular-nums;line-height:1;padding:0;display:grid;place-items:center;
+  color:var(--pen);background:transparent;border:2px dashed var(--slot);border-radius:8px;cursor:pointer;touch-action:manipulation}
+.cell.rc{width:calc(var(--c) - 8px);height:calc(var(--c) - 10px);margin-top:3px;font-size:calc(var(--c)*.6)}
+.cell.hp{width:calc(var(--c) - 14px);height:calc(var(--c) - 18px);font-size:calc(var(--c)*.42);border-width:1.5px;opacity:.85}
+.cell.hp.two{font-size:calc(var(--c)*.32);letter-spacing:-.5px}
+.cell.on{border-color:transparent;opacity:1}
+.cell.sel{border:2px solid var(--focus);background:rgba(37,99,235,.12);opacity:1}
+.cell.bad{border:2px solid var(--post);background:var(--post-bg)}
+.cell:disabled{cursor:default;border-color:transparent}
+.pad[hidden]{display:none}
+.pad{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px}
+.key{height:50px;border:2px solid var(--line);border-bottom-width:4px;border-radius:12px;background:var(--field);color:var(--ink);
+  font:inherit;font-size:24px;font-weight:700;font-variant-numeric:tabular-nums;touch-action:manipulation;padding:0}
+.key:active{transform:translateY(2px);border-bottom-width:2px}
+.key:disabled,.padkick:disabled{opacity:.45}
+.key.del{grid-column:span 2;font-size:22px}
+.key.clr{grid-column:span 3;font-size:16px}
+.padkick{grid-column:span 3;height:50px;padding:0;touch-action:manipulation}
+.tools{display:flex;flex-wrap:wrap;gap:0 22px;margin-top:10px}
+.tools .hint-btn{margin-top:0}
+.scr{margin-top:10px;background:var(--field);border:2px dashed var(--line);border-radius:14px;padding:12px}
+.scr-t{font-size:14px;color:var(--muted);margin-bottom:8px}
+.scr-build{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px}
+.scr-build input{width:76px;font:inherit;font-size:20px;font-weight:700;padding:7px 4px;text-align:center;border:2px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink)}
+.ops3{display:flex;gap:4px}
+.opb{width:40px;height:44px;border:2px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink);font-size:22px;font-weight:700;padding:0}
+.opb[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--led)}
+.kick.sm{padding:8px 16px;font-size:16px}
+
+/* progress on the home screen */
+.streak{margin-top:8px;font-size:14px;opacity:.92}
+.resume{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding:12px 14px 12px 12px;
+  background:var(--paper);border-radius:16px;border-inline-start:8px solid var(--led);box-shadow:var(--shadow)}
+.resume-t{font-size:15px;line-height:1.4}
+.tag{display:inline-block;background:var(--led);color:var(--led-ink);font-size:12px;font-weight:700;line-height:1.7;border-radius:999px;padding:0 8px;margin-inline-end:6px}
+.cup .tag{background:var(--navy);color:var(--led)}
+.row .nm small{display:block;font-size:13px;font-weight:400;color:var(--muted);margin-top:2px}
+.redo{display:block;width:100%;text-align:right;margin:-4px 0 16px;padding:12px 18px;border:0;border-inline-start:8px solid var(--save);border-radius:16px;background:var(--paper);color:var(--ink);box-shadow:var(--shadow)}
+.redo-t{display:block;font-family:"Secular One","Rubik",sans-serif;font-size:21px;line-height:1.25}
+.redo-s{display:block;font-size:14px;color:var(--muted)}
+.sync{display:inline-block;margin:6px 0 2px;opacity:.85}
+
+/* training log */
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;text-align:center}
+.stats3 b{display:block;font-family:"Secular One","Rubik",sans-serif;font-weight:400;font-size:30px;line-height:1.1;color:var(--led);font-variant-numeric:tabular-nums}
+.stats3 span{font-size:13px;opacity:.85}
+.sheet{background:var(--paper);border-radius:18px;padding:14px 16px;margin-top:14px;box-shadow:var(--shadow)}
+.sheet h2{margin:0 0 8px;font-size:18px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:118px}
+.week div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;height:100%;font-size:12px;color:var(--muted)}
+.week b{font-size:12px;color:var(--ink);font-variant-numeric:tabular-nums}
+.week i{display:block;width:70%;max-width:30px;background:var(--goal);border-radius:6px 6px 0 0}
+.lrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.sheet h2+.lrow{border-top:0}
+.lrow .ic{width:28px;flex:none;text-align:center;font-size:20px}
+.lrow .nm{flex:1;min-width:0;font-weight:600}
+.lrow small{display:block;font-size:13px;font-weight:400;color:var(--muted)}
+.lrow .sc{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.warn{display:block;color:var(--save);font-weight:600}
+.empty{margin:0;color:var(--muted)}
+
+.board-p{margin:6px 0 0;font-size:15px;opacity:.9}
+.sheet-p{margin:0 0 8px;font-size:15px;color:var(--muted)}
+.code{display:block;width:100%;margin-bottom:10px;padding:10px;font:13px/1.45 ui-monospace,Menlo,Consolas,monospace;word-break:break-all;
+  border:2px solid var(--line);border-radius:12px;background:var(--field);color:var(--ink);resize:vertical}
+.toast.ok{color:var(--goal)}
+.note{font-size:14px;color:var(--muted);text-align:right;margin-top:2px}
+.pcode{font-family:"Secular One","Rubik",sans-serif;font-size:32px;letter-spacing:3px;text-align:center;background:var(--navy);color:var(--led);border-radius:14px;padding:10px 8px;margin:4px 0 12px;font-variant-numeric:tabular-nums}
+.ghost.dark{color:var(--ink);border-color:var(--line)}
+.goalflash{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:9}
+.goalflash span{font-family:"Secular One","Rubik",sans-serif;font-size:78px;color:var(--led);text-shadow:0 5px 0 var(--navy),0 0 30px rgba(255,200,61,.6);animation:pop .95s ease-out forwards}
+@keyframes pop{0%{transform:scale(.3) rotate(-8deg);opacity:0}30%{transform:scale(1.15) rotate(3deg);opacity:1}70%{transform:scale(1);opacity:1}100%{transform:scale(1.05);opacity:0}}
+.toast{margin-top:10px;font-size:15px;color:var(--save);font-weight:600}
+@media (prefers-reduced-motion:reduce){
+  .goalflash{display:none}
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+@media (max-width:380px){
+  .q-prompt{font-size:18px}
+  .brand{font-size:23px}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="config.js"></script>
+<script>
+'use strict';
+/* ================= helpers ================= */
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const uniq=a=>[...new Set(a)];
+const fmt=n=>Number(n).toLocaleString('en-US');
+const m=s=>`<span class="m" dir="ltr">${s}</span>`;
+const sym=(a,b)=>a<b?'<':a>b?'>':'=';
+const symH=s=>s==='<'?'&lt;':s==='>'?'&gt;':'=';
+const digs=n=>[Math.floor(n/1000)%10,Math.floor(n/100)%10,Math.floor(n/10)%10,n%10];
+const fromDigs=d=>d[0]*1000+d[1]*100+d[2]*10+d[3];
+const clean=s=>String(s).replace(/[,\s]/g,'');
+const isInt=s=>/^\d+$/.test(clean(s));
+const normHe=s=>String(s).replace(/[\s"'״׳\-]/g,'').replace(/ך/g,'כ').replace(/ם/g,'מ').replace(/ן/g,'נ').replace(/ף/g,'פ').replace(/ץ/g,'צ');
+const joinHe=a=>a.length<2?a.join(''):a.slice(0,-1).join(', ')+' ו'+a[a.length-1];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const Q={
+  num:o=>Object.assign({kind:'num'},o),
+  text:o=>Object.assign({kind:'text'},o),
+  open:o=>Object.assign({kind:'open'},o),
+  choice:o=>Object.assign({kind:'choice'},o),
+  cmp:o=>Object.assign({kind:'cmp',prompt:'סמנו &lt;, &gt; או = בתוך הריבוע.'},o)
+};
+
+const UNITS=['','אחת','שתיים','שלוש','ארבע','חמש','שש','שבע','שמונה','תשע'];
+const TEENS=['עשר','אחת עשרה','שתים עשרה','שלוש עשרה','ארבע עשרה','חמש עשרה','שש עשרה','שבע עשרה','שמונה עשרה','תשע עשרה'];
+const TENS=['','עשר','עשרים','שלושים','ארבעים','חמישים','שישים','שבעים','שמונים','תשעים'];
+const HUNDREDS=['','מאה','מאתיים','שלוש מאות','ארבע מאות','חמש מאות','שש מאות','שבע מאות','שמונה מאות','תשע מאות'];
+const THOUSANDS=['','אלף','אלפיים','שלושת אלפים','ארבעת אלפים','חמשת אלפים','ששת אלפים','שבעת אלפים','שמונת אלפים','תשעת אלפים'];
+function heWords(n){
+  if(n===0)return 'אפס';
+  const [th,h,t,u]=digs(n);const p=[];
+  if(th)p.push(THOUSANDS[th]);
+  if(h)p.push(HUNDREDS[h]);
+  if(t===1)p.push(TEENS[u]);else{if(t)p.push(TENS[t]);if(u)p.push(UNITS[u]);}
+  if(p.length>1)p[p.length-1]='ו'+p[p.length-1];
+  return p.join(' ');
+}
+function placeTable(n){
+  const d=String(n).split('').map(Number);
+  const heads=['אלפים','מאות','עשרות','יחידות'].slice(4-d.length);
+  return `<table class="placetab" dir="ltr"><tr>${heads.map(h=>`<th>${h}</th>`).join('')}</tr><tr>${d.map(x=>`<td>${x}</td>`).join('')}</tr></table>`;
+}
+function vertical(a,b,op){
+  const A=String(a),B=String(b),w=Math.max(A.length,B.length);
+  const row=(s,pre)=>'<tr><td>'+pre+'</td>'+s.padStart(w,' ').split('').map(c=>`<td>${c===' '?'':c}</td>`).join('')+'</tr>';
+  return `<table class="vert" dir="ltr">${row(A,'')}${row(B,op)}<tr class="line">${'<td></td>'.repeat(w+1)}</tr></table>`;
+}
+function randWithZeros(){const d=[rnd(1,9)];for(let i=0;i<3;i++)d.push(Math.random()<0.4?0:rnd(1,9));return fromDigs(d);}
+function distract(n,k){
+  const d=digs(n);
+  const perms=[[0,2,1,3],[0,1,3,2],[0,3,2,1],[0,2,3,1],[0,3,1,2]];
+  const pv=shuffle(perms.map(p=>fromDigs(p.map(i=>d[i]))));
+  const ov=shuffle([n+100,n-100,n+10,n-10,n+1000,n-1000,n+1,n-1]);
+  return uniq([...pv,...ov]).filter(v=>v!==n&&v>=1000&&v<=9999).slice(0,k);
+}
+
+/* ================= 1. place value ================= */
+function pvPrevNext(){
+  const th=rnd(1,8);
+  const n=pick([th*1000+rnd(1,9)*100+99,th*1000+999,(th+1)*1000,th*1000+rnd(1,9)*100,th*1000+rnd(0,9)*100+rnd(0,9)*10+9,th*1000+rnd(1,9)*100+rnd(1,9)*10]);
+  const prev=Math.random()<0.5,ans=prev?n-1:n+1;
+  return Q.num({
+    prompt:`לפניכם המספר <span class="boxed">${fmt(n)}</span>.<br>כתבו את המספר ${prev?'הקודם':'העוקב'} לו.`,
+    answer:ans,
+    hint:`המספר <b>${prev?'הקודם':'העוקב'}</b> ${prev?'קטן':'גדול'} ב-1. שימו לב מה קורה כש${prev?'יורדים מ-0: ה-0 הופך ל-9':'עוברים את 9: ה-9 הופך ל-0'}.`,
+    explain:m(`${fmt(n)} ${prev?'−':'+'} 1 = ${fmt(ans)}`)
+  });
+}
+function pvWordsToNum(){
+  const n=randWithZeros(),opts=shuffle([n,...distract(n,3)]);
+  return Q.choice({
+    prompt:`איזה מספר כתוב כאן במילים?<div class="words">${heWords(n)}</div>`,
+    options:opts.map(fmt),answer:opts.indexOf(n),
+    hint:'פרקו את המילים: כמה אלפים? כמה מאות? כמה עשרות? כמה יחידות? מקום שאין בו כלום מקבל 0.',
+    explain:placeTable(n)+`${heWords(n)} = ${m(fmt(n))}`
+  });
+}
+function pvNumToWords(){
+  const n=randWithZeros(),opts=shuffle([n,...distract(n,3)]);
+  return Q.choice({
+    prompt:`איך כותבים במילים את המספר <span class="boxed">${fmt(n)}</span>?`,
+    options:opts.map(heWords),answer:opts.indexOf(n),wide:true,
+    hint:'קראו את המספר משמאל לימין: קודם האלפים, אחר כך המאות, העשרות והיחידות. 0 לא אומרים בקול.',
+    explain:placeTable(n)+heWords(n)
+  });
+}
+function pvDigits(){
+  const a=rnd(1,9);let b;do{b=rnd(1,9);}while(b===a);
+  const withZero=Math.random()<0.7;let c;
+  if(withZero)c=0;else{do{c=rnd(1,9);}while(c===a||c===b);}
+  const ds=[a,b,c],big=Math.random()<0.5;
+  const desc=ds.slice().sort((x,y)=>y-x),asc=ds.slice().sort((x,y)=>x-y);
+  const ans=big?desc[0]*100+desc[1]*10+desc[2]:(asc[0]===0?asc[1]*100+asc[2]:asc[0]*100+asc[1]*10+asc[2]);
+  return Q.num({
+    prompt:`לפניכם הספרות ${m(shuffle(ds).join(',  '))}.<br>השתמשו בכל ספרה פעם אחת והרכיבו את המספר התלת-ספרתי <b>ה${big?'גדול':'קטן'} ביותר</b>.`,
+    answer:ans,
+    hint:big?'שימו את הספרה הגדולה ביותר במקום הכי "שווה" – המאות.':(withZero?'זהירות! מספר תלת-ספרתי לא יכול להתחיל ב-0. איפה עוד אפשר לשים את ה-0?':'שימו את הספרה הקטנה ביותר במקום המאות.'),
+    explain:big?`מסדרים מהספרה הגדולה לקטנה: ${m(ans)}`:(withZero?`0 לא יכול להיות ראשון, אז מתחילים ב-${Math.floor(ans/100)} ומיד אחריו ה-0: ${m(ans)}`:`מסדרים מהספרה הקטנה לגדולה: ${m(ans)}`)
+  });
+}
+function pvWhoAmI(){
+  const four=Math.random()<0.35;
+  const th=four?rnd(2,9):0,h=rnd(2,9);
+  let t=Math.random()<0.3?0:rnd(2,9),u=Math.random()<0.2?0:rnd(2,9);
+  if(!t&&!u)u=rnd(2,9);
+  let parts=[];
+  if(th)parts.push(`${th} אלפים`);
+  parts.push(`${h} מאות`);
+  if(t)parts.push(`${t} עשרות`);
+  if(u)parts.push(`${u} יחידות`);
+  if(Math.random()<0.4)parts=shuffle(parts);
+  const n=th*1000+h*100+t*10+u;
+  return Q.num({
+    prompt:`<b>מי אני?</b><br>אני מספר הבנוי ${joinHe(parts.map(p=>'מ-'+p))}.`,
+    answer:n,
+    hint:'ציירו טבלת ערך המקום (אלפים, מאות, עשרות, יחידות) ומלאו כל מקום. מקום שלא מוזכר מקבל 0.',
+    explain:placeTable(n)+`אני ${m(fmt(n))}`
+  });
+}
+function pvBuild(){
+  const v=rnd(0,2);
+  const P=['אלפים','מאות','עשרות','יחידות'],ORD=['הראשונה','השנייה','השלישית','הרביעית'];
+  if(v===0){
+    const i=rnd(0,3),d=rnd(1,9),ds=[rnd(1,9),rnd(0,9),rnd(0,9),rnd(0,9)];ds[i]=d;const s=fromDigs(ds);
+    return Q.open({
+      prompt:`כתבו מספר <b>ארבע-ספרתי</b> שספרת ה${P[i]} שלו ${d}.`,
+      check:x=>{if(!isInt(x))return false;const n=+clean(x);return n>=1000&&n<=9999&&digs(n)[i]===d;},
+      sample:fmt(s),
+      hint:`מספר ארבע-ספרתי הוא בין 1,000 ל-9,999. ספרת ה${P[i]} היא הספרה ${ORD[i]} משמאל.`,
+      explain:`יש הרבה תשובות נכונות! למשל ${m(fmt(s))}`+placeTable(s)
+    });
+  }
+  if(v===1){
+    const a=rnd(1,9),b=rnd(0,9),s=a*1000+rnd(0,9)*100+rnd(0,9)*10+b;
+    return Q.open({
+      prompt:`כתבו מספר <b>ארבע-ספרתי</b> שספרת האלפים שלו ${a} וספרת היחידות שלו ${b}.`,
+      check:x=>{if(!isInt(x))return false;const n=+clean(x);return n>=1000&&n<=9999&&digs(n)[0]===a&&digs(n)[3]===b;},
+      sample:fmt(s),
+      hint:`הספרה הראשונה משמאל היא ${a}, והאחרונה היא ${b}. באמצע – מה שבא לכם.`,
+      explain:`יש הרבה תשובות נכונות! למשל ${m(fmt(s))}`+placeTable(s)
+    });
+  }
+  const u=rnd(0,9),t=rnd(0,9),s=rnd(1,9)*100+t*10+u;
+  return Q.open({
+    prompt:`כתבו מספר <b>תלת-ספרתי</b> שספרת היחידות שלו ${u} וספרת העשרות שלו ${t}.`,
+    check:x=>{if(!isInt(x))return false;const n=+clean(x);return n>=100&&n<=999&&n%10===u&&Math.floor(n/10)%10===t;},
+    sample:String(s),
+    hint:'היחידות – הספרה הכי ימנית. העשרות – הספרה שלידה משמאל.',
+    explain:`יש הרבה תשובות נכונות! למשל ${m(s)}`+placeTable(s)
+  });
+}
+function pvScale(){
+  const v=rnd(0,3);
+  if(v===0){const n=rnd(100,899);return Q.num({prompt:`הגדילו את המספר ${m(fmt(n))} <b>ב-100</b>.`,answer:n+100,hint:'"ב-100" = מוסיפים 100. רק ספרת המאות משתנה.',explain:m(`${fmt(n)} + 100 = ${fmt(n+100)}`)});}
+  if(v===1){const n=rnd(100,999);return Q.num({prompt:`הגדילו את המספר ${m(fmt(n))} <b>פי 10</b>.`,answer:n*10,hint:'"פי 10" = כופלים ב-10. כל ספרה זזה מקום אחד שמאלה, ובסוף נוסף 0.',explain:m(`${fmt(n)} × 10 = ${fmt(n*10)}`)});}
+  if(v===2){const n=rnd(100,999)*10;return Q.num({prompt:`הקטינו את המספר ${m(fmt(n))} <b>פי 10</b>.`,answer:n/10,hint:'"הקטינו פי 10" = מחלקים ב-10. מורידים את ה-0 מהסוף.',explain:m(`${fmt(n)} : 10 = ${fmt(n/10)}`)});}
+  const n=rnd(100,989);return Q.num({prompt:`הגדילו את המספר ${m(fmt(n))} <b>ב-10</b>.`,answer:n+10,hint:'זהירות: "ב-10" זה לא "פי 10"! "ב-10" = מוסיפים 10.',explain:m(`${fmt(n)} + 10 = ${fmt(n+10)}`)});
+}
+
+/* ================= 2. compare, sequences, number line ================= */
+function cmpNums(){
+  const a=rnd(1000,9999),b=Math.random()<0.2?a:pick(distract(a,4));
+  return Q.cmp({left:fmt(a),right:fmt(b),answer:sym(a,b),
+    hint:'משווים משמאל לימין: קודם ספרת האלפים. אם היא שווה – עוברים למאות, וכן הלאה. הפה הפתוח של הסימן פונה למספר הגדול.',
+    explain:m(`${fmt(a)} ${symH(sym(a,b))} ${fmt(b)}`)});
+}
+function pvCompareWords(){
+  const a=randWithZeros(),b=Math.random()<0.25?a:pick(distract(a,3));
+  const W={h:`<span class="w" dir="rtl">${heWords(a)}</span>`,v:a},N={h:fmt(b),v:b};
+  const [L,R]=Math.random()<0.5?[N,W]:[W,N];
+  const s=sym(L.v,R.v);
+  return Q.cmp({left:L.h,right:R.h,answer:s,
+    hint:'קודם הפכו את המילים למספר, ורק אז השוו ספרה-ספרה.',
+    explain:`${heWords(a)} = ${m(fmt(a))}<br>${m(`${fmt(L.v)} ${symH(s)} ${fmt(R.v)}`)}`});
+}
+const ruleText=d=>d>0?`עולה ב-${fmt(d)}`:`יורדת ב-${fmt(-d)}`;
+function seqNext(){
+  const step=pick([100,-10,10,-100,1000,5,-5,25,50,-50,200,-1]);
+  const start=step<0?rnd(Math.abs(step)*6+100,9000):rnd(100,9999-step*6);
+  const t=[0,1,2].map(i=>start+i*step),ans=start+3*step;
+  return Q.num({
+    prompt:`השלימו את המספר הבא בסדרה:<div class="seq">${m(t.map(fmt).join(' ,  ')+' ,  ___')}</div>`,
+    answer:ans,
+    hint:'בדקו בכמה משתנה כל מספר לעומת זה שלפניו – זו החוקיות.',
+    explain:`החוקיות: הסדרה ${ruleText(step)} בכל פעם.<br>${m(t.concat(ans).map(fmt).join(' ,  '))}`
+  });
+}
+function seqRule(){
+  const step=pick([100,-10,10,-100,1000,-1000,50,-50]);
+  const start=step<0?rnd(Math.abs(step)*5+100,9000):rnd(100,9999-step*5);
+  const t=[0,1,2,3].map(i=>start+i*step);
+  const others=shuffle([100,-100,10,-10,1000,-1000,50,-50].filter(x=>x!==step&&x!==-step));
+  const opts=shuffle([step,-step,...others.slice(0,2)]);
+  return Q.choice({
+    prompt:`מה החוקיות של הסדרה?<div class="seq">${m(t.map(fmt).join(' ,  '))}</div>`,
+    options:opts.map(ruleText),answer:opts.indexOf(step),
+    hint:'חסרו מספר אחד מהמספר שאחריו. האם הסדרה עולה או יורדת?',
+    explain:m(`${fmt(t[0])} ${step>0?'+':'−'} ${fmt(Math.abs(step))} = ${fmt(t[1])}`)+`<br>הסדרה ${ruleText(step)} בכל פעם.`
+  });
+}
+function numLine(){
+  const fine=Math.random()<0.45;
+  const span=fine?100:1000,major=fine?10:100,minor=fine?5:50;
+  const S=fine?rnd(10,98)*100:rnd(1,8)*1000;
+  const val=fine?S+rnd(1,9)*10+(Math.random()<0.3?5:0):S+rnd(1,9)*100+(Math.random()<0.35?50:0);
+  const X=v=>(20+(v-S)/span*320).toFixed(1);
+  let g='';
+  for(let v=S;v<=S+span;v+=minor){
+    const maj=(v-S)%major===0;
+    g+=`<line x1="${X(v)}" y1="${maj?30:35}" x2="${X(v)}" y2="${maj?50:45}" stroke="currentColor" stroke-width="${maj?2:1}"/>`;
+    if(maj&&((v-S)/major)%2===0)g+=`<text x="${X(v)}" y="68" font-size="11" text-anchor="middle" fill="currentColor">${fmt(v)}</text>`;
+  }
+  const svg=`<svg viewBox="0 0 364 76" width="364" style="direction:ltr" role="img" aria-label="ישר מספרים"><line x1="10" y1="40" x2="352" y2="40" stroke="currentColor" stroke-width="2"/><polygon points="352,34 360,40 352,46" fill="currentColor"/>${g}<circle cx="${X(val)}" cy="40" r="7" class="dot"/><text x="${X(val)}" y="21" text-anchor="middle" font-size="17" font-weight="700" class="dotq">?</text></svg>`;
+  const cands=uniq([val+major,val-major,val+minor,val-minor,val+2*major,val-2*major]).filter(v=>v>S&&v<S+span&&v!==val);
+  const opts=shuffle([val,...shuffle(cands).slice(0,3)]);
+  return Q.choice({
+    prompt:'איזה מספר מסומן בנקודה האדומה על ישר המספרים?',visual:svg,
+    options:opts.map(fmt),answer:opts.indexOf(val),
+    hint:`בין שני קווים ארוכים יש ${major}. הקו הקצר באמצע מסמן ${minor}. התחילו מהמספר הכתוב הקרוב לנקודה וספרו בקפיצות.`,
+    explain:`הנקודה נמצאת על ${m(fmt(val))}.`
+  });
+}
+
+/* ================= 3. addition & subtraction ================= */
+function addCarry(){
+  let a,b;
+  do{a=rnd(1000,5999);b=rnd(150,999);}while(!((a%10+b%10>=10)||(Math.floor(a/10)%10+Math.floor(b/10)%10>=10)));
+  return Q.num({
+    prompt:`פתרו בטור: ${m(`${fmt(a)} + ${b}`)}`,answer:a+b,grid:{a,b,op:'+'},
+    hint:'מתחילים מהיחידות – העמודה הימנית. כשסכום עמודה עובר 9, כותבים למטה רק את ספרת היחידות, ואת ה-1 כותבים בריבוע הקטן שמעל העמודה הבאה.',
+    explain:workedHTML(a,b,'+')+m(`${fmt(a)} + ${b} = ${fmt(a+b)}`)
+  });
+}
+function subZero(){
+  let a,b,split;
+  const u=rnd(0,7),bu=rnd(u+1,9),bt=rnd(1,9);
+  if(Math.random()<0.6){
+    const H=rnd(2,9);a=H*100+u;b=rnd(1,H-1)*100+bt*10+bu;
+    split=`${(H-1)*100} + 90 + ${u+10}`;
+  }else{
+    const H=rnd(1,5);a=H*1000+u;b=rnd(1,9)*100+bt*10+bu;
+    split=`${fmt((H-1)*1000)} + 900 + 90 + ${u+10}`;
+  }
+  return Q.num({
+    prompt:`פתרו בטור: ${m(`${fmt(a)} − ${b}`)}`,answer:a-b,grid:{a,b,op:'−'},
+    hint:`האפסים הם המלכודת! כשצריך לפרוט, פורטים מהמקום הראשון שיש בו ספרה: ${m(`${fmt(a)} = ${split}`)}<br>את הספרה החדשה כותבים בריבוע הקטן שמעל הספרה, והישנה נמחקת מעצמה.`,
+    explain:workedHTML(a,b,'−')+`בדיקה: ${m(`${fmt(a-b)} + ${b} = ${fmt(a)}`)}`
+  });
+}
+function cmpNoSolve(){
+  const a=rnd(120,499),b=rnd(120,499),x=rnd(400,999),y=rnd(11,99),t=rnd(0,4);
+  let L,R,why;
+  if(t===0){L=`${a} + ${b}`;R=`${a+1} + ${b-1}`;why=`ב-${m(R)} המספר הראשון גדל ב-1 והשני קטן ב-1 – הם "מתקזזים", אז הסכום לא משתנה.`;}
+  else if(t===1){L=`${a} + ${b}`;R=`${a} + ${b+1}`;why=`המספר הראשון זהה, וב-${m(R)} מוסיפים 1 יותר – לכן הסכום שלו גדול יותר.`;}
+  else if(t===2){L=`${x} − ${y}`;R=`${x} − ${y+1}`;why=`מתחילים מאותו מספר, אבל ב-${m(R)} מורידים יותר – אז נשאר פחות.`;}
+  else if(t===3){L=`${x} − ${y}`;R=`${x+1} − ${y}`;why=`מורידים אותו דבר, אבל ב-${m(R)} מתחילים ממספר גדול יותר – אז נשאר יותר.`;}
+  else{L=`${a} + ${b}`;R=`${b} + ${a}`;why='אותם מספרים בסדר הפוך – בחיבור הסדר לא משנה.';}
+  if(Math.random()<0.5)[L,R]=[R,L];
+  const s=sym(evalE(L),evalE(R));
+  return Q.cmp({prompt:'<b>בלי לפתור!</b> סמנו &lt;, &gt; או = בתוך הריבוע.',left:L,right:R,answer:s,
+    hint:'השוו את המספרים בשני התרגילים: מה זהה? מה השתנה, ובכמה?',
+    explain:why+'<br>נסו להסביר את זה בקול, במילים שלכם – במבדק מבקשים "נמקו".'});
+}
+function evalE(e){return Function('"use strict";return ('+e.replace(/−/g,'-').replace(/×/g,'*').replace(/:/g,'/')+')')();}
+function mentalAdd(){
+  const [r,R]=pick([[99,100],[199,200],[299,300],[98,100],[198,200],[999,1000],[49,50],[398,400]]);
+  if(Math.random()<0.5){
+    const b=rnd(120,880),ans=r+b;
+    return Q.num({prompt:`פתרו בראש: ${m(`${fmt(r)} + ${b} =`)}`,answer:ans,
+      hint:`${m(r)} קרוב מאוד ל-${m(fmt(R))}. חשבו ${m(`${fmt(R)} + ${b}`)}, ואז הורידו ${R-r}.`,
+      explain:m(`${fmt(R)} + ${b} − ${R-r} = ${fmt(ans)}`)});
+  }
+  const b=rnd(R+50,R+900),ans=b-r;
+  return Q.num({prompt:`פתרו בראש: ${m(`${fmt(b)} − ${fmt(r)} =`)}`,answer:ans,
+    hint:`הורידו ${m(fmt(R))} במקום ${m(r)} – הורדתם ${R-r} יותר מדי, אז החזירו אותו.`,
+    explain:m(`${fmt(b)} − ${fmt(R)} + ${R-r} = ${fmt(ans)}`)});
+}
+
+/* ================= 4. multiplication ================= */
+function mulTable(){
+  const a=pick([3,4,6,6,7,7,8,8,9,9]),b=rnd(2,10);
+  let hint;
+  if(a===9)hint=`טריק ה-9: ${m(`9 × ${b} = 10 × ${b} − ${b}`)}`;
+  else if(a===4)hint='כפול 4 = פעמיים "כפול 2" (מכפילים ושוב מכפילים).';
+  else if(a===8)hint='כפול 8 = שלוש פעמים "כפול 2": מכפילים, מכפילים, ועוד פעם מכפילים.';
+  else if(b>5)hint=m(`${a} × ${b} = ${a} × 5 + ${a} × ${b-5}`);
+  else hint=`חשבו ${m(`${a} × ${b-1}`)} ותוסיפו עוד ${a}.`;
+  return Q.num({prompt:`פתרו: ${m(`${a} × ${b} =`)}`,answer:a*b,hint,explain:m(`${a} × ${b} = ${a*b}`)});
+}
+function mulTens(){
+  let a=rnd(2,9)*10,b=Math.random()<0.6?rnd(2,9)*10:rnd(2,9);
+  if(Math.random()<0.2){a=pick([20,40,50]);b=pick([50,20,60].filter(x=>x!==a));}
+  if(Math.random()<0.5)[a,b]=[b,a];
+  const ca=a%10===0?a/10:a,cb=b%10===0?b/10:b,z=(a%10===0?1:0)+(b%10===0?1:0);
+  return Q.num({prompt:`פתרו: ${m(`${a} × ${b} =`)}`,answer:a*b,
+    hint:`"הסתירו" את האפסים: ${m(`${ca} × ${cb} = ${ca*cb}`)}, ואז הוסיפו ${z===1?'אפס אחד':'שני אפסים'} בסוף.`,
+    explain:m(`${ca} × ${cb} = ${ca*cb}`)+` ← ועוד ${z===1?'אפס':'שני אפסים'}: `+m(fmt(a*b))+((ca*cb)%10===0?'<br>שימו לב: ה-0 של '+m(ca*cb)+' נשאר, ומוסיפים עליו.':'')});
+}
+function mulDist(){
+  const a=rnd(3,9),t=rnd(2,9)*10,d=pick([-2,-1,-1,1,2,3]),b=t+d,ans=a*b,sg=d<0?'−':'+',ad=Math.abs(d);
+  return Q.num({prompt:`פתרו: ${m(`${a} × ${b} =`)}<br><small>אפשר להיעזר בחוק הפילוג.</small>`,answer:ans,
+    hint:`פרקו את ${m(b)} למספר עגול: ${m(`${b} = ${t} ${sg} ${ad}`)}. כפלו כל חלק ב-${a}.`,
+    explain:m(`${a} × ${b} = ${a} × ${t} ${sg} ${a} × ${ad}`)+'<br>'+m(`= ${a*t} ${sg} ${a*ad} = ${ans}`)});
+}
+function mulVertical(){
+  const zeroMid=Math.random()<0.4,h=rnd(1,9),t=zeroMid?0:rnd(1,9),u=rnd(1,9),n=h*100+t*10+u,k=rnd(2,9);
+  return Q.num({prompt:`פתרו בטור: ${m(`${n} × ${k}`)}`,grid:{a:n,b:k,op:'×'},answer:n*k,
+    hint:`כופלים כל ספרה ב-${k}, מתחילים מהיחידות. אם יוצא יותר מ-9, כותבים למטה את היחידות, ואת העשרות כותבים בריבוע הקטן שמעל הספרה הבאה – ומוסיפים אותן אחרי הכפל שלה.${zeroMid?' שימו לב ל-0 באמצע: '+m(`0 × ${k} = 0`)+', אבל לא לשכוח להוסיף את מה שהעברתם!':''}`,
+    explain:workedHTML(n,k,'×')+m(`${h*100}×${k} + ${t*10}×${k} + ${u}×${k}`)+'<br>'+m(`= ${h*100*k} + ${t*10*k} + ${u*k} = ${fmt(n*k)}`)});
+}
+function mulZeroOne(){
+  const mk=[
+    n=>({s:`${n} × 0`,v:0}),n=>({s:`${n} × 1`,v:n}),n=>({s:`${n} : 1`,v:n}),
+    n=>({s:`0 : ${n}`,v:0}),n=>({s:`${n} : ${n}`,v:1}),n=>({s:`0 × ${n}`,v:0}),n=>({s:`1 × ${n}`,v:n})
+  ];
+  let L,R;
+  if(Math.random()<0.35){const n=rnd(2,40);const p=shuffle([mk[1],mk[2],mk[6]]);L=p[0](n);R=p[1](n);}
+  else{L=pick(mk)(rnd(2,40));R=pick(mk)(rnd(2,40));}
+  const s=sym(L.v,R.v);
+  return Q.cmp({left:L.s,right:R.s,answer:s,
+    hint:'כל מספר כפול 0 = 0. כל מספר כפול 1 או חלקי 1 = המספר עצמו. מספר חלקי עצמו = 1.',
+    explain:m(`${L.s} = ${L.v}`)+'<br>'+m(`${R.s} = ${R.v}`)+'<br>'+m(`${L.s} ${symH(s)} ${R.s}`)});
+}
+
+/* ================= 5. division, estimation, divisibility ================= */
+function divTable(){
+  const d=rnd(3,9),q=rnd(3,10),n=d*q;
+  return Q.num({prompt:`פתרו: ${m(`${n} : ${d} =`)}`,answer:q,
+    hint:`חשבו הפוך: איזה מספר כפול ${d} נותן ${n}?`,
+    explain:m(`${n} : ${d} = ${q}`)+' כי '+m(`${q} × ${d} = ${n}`)});
+}
+function divBeyond(){
+  let d,q;do{d=rnd(2,7);q=rnd(11,29);}while(d*q>99||q%10===0);
+  const n=d*q,k=Math.floor(q/10),big=d*10*k,rest=n-big;
+  return Q.num({prompt:`פתרו: ${m(`${n} : ${d} =`)}`,answer:q,
+    hint:`פרקו את ${m(n)} לחלקים שקל לחלק ב-${d}: ${m(`${n} = ${big} + ${rest}`)}`,
+    explain:m(`${big} : ${d} = ${10*k}`)+'<br>'+m(`${rest} : ${d} = ${q-10*k}`)+'<br>'+m(`${10*k} + ${q-10*k} = ${q}`)});
+}
+function estimate(){
+  let a,b;do{a=rnd(12,48);b=rnd(12,48);}while(a%10===5||b%10===5||a%10===0||b%10===0);
+  const ra=Math.round(a/10)*10,rb=Math.round(b/10)*10,R=ra*rb;
+  const opts=Math.random()<0.5?[R/10,R,R*10]:[R,R*10,R*100];
+  return Q.choice({prompt:`בלי לפתור עד הסוף: איזה מספר הכי קרוב לתוצאה של ${m(`${a} × ${b}`)}?`,
+    options:opts.map(fmt),answer:opts.indexOf(R),
+    hint:`עגלו כל מספר לעשרת הקרובה: ${m(`${a} ≈ ${ra}`)}, ${m(`${b} ≈ ${rb}`)}.`,
+    explain:m(`${ra} × ${rb} = ${fmt(R)}`)+` (התוצאה המדויקת: ${m(fmt(a*b))} – באמת קרוב!)`});
+}
+function divisPick(){
+  const k=pick([2,5,5,10]);
+  let c;do{c=rnd(10,999);}while(c%k!==0);
+  const wrong=[];
+  if(k===10){let t;do{t=rnd(2,99)*10+5;}while(t>999);wrong.push(t);}
+  if(k===5){const r=String(c).split('').reverse().join('');if(+r%5!==0&&+r>=10)wrong.push(+r);}
+  while(wrong.length<3){const w=rnd(10,999);if(w%k!==0&&!wrong.includes(w))wrong.push(w);}
+  const opts=shuffle([c,...wrong]);
+  const rule={2:'מספר מתחלק ב-2 אם ספרת היחידות שלו זוגית: 0, 2, 4, 6 או 8.',5:'מספר מתחלק ב-5 אם ספרת היחידות שלו 0 או 5.',10:'מספר מתחלק ב-10 רק אם ספרת היחידות שלו 0.'}[k];
+  return Q.choice({prompt:`איזה מספר מתחלק ב-${k} בלי שארית?`,options:opts.map(String),answer:opts.indexOf(c),
+    hint:'מסתכלים רק על ספרת היחידות! '+rule,explain:`${m(c)} – ${rule}`});
+}
+function divisComplete(){
+  const k=pick([2,5]),base=rnd(3,99),d=k===2?pick([0,2,4,6,8]):pick([0,5]);
+  return Q.open({
+    prompt:`השלימו ספרת יחידות כך שיתקבל מספר המתחלק ב-${k}. הקלידו רק את הספרה החסרה.<div class="big" dir="ltr">${base}<span class="blank">&nbsp;</span></div>`,
+    check:x=>{const s=clean(x);let dd;if(/^\d$/.test(s))dd=+s;else if(s.length===String(base).length+1&&s.startsWith(String(base)))dd=+s.slice(-1);else return false;return k===2?dd%2===0:(dd===0||dd===5);},
+    sample:String(base*10+d),
+    hint:k===2?'ספרה זוגית: 0, 2, 4, 6 או 8.':'רק שתי ספרות עובדות: 0 או 5.',
+    explain:k===2?`כל ספרה זוגית מתאימה: ${m([0,2,4,6,8].map(x=>base+''+x).join(', '))}`:`מתאימות 0 או 5: ${m(base+'0, '+base+'5')}`});
+}
+
+/* ================= 6. order of operations ================= */
+function opsGen(t){
+  let e,ans,steps;
+  if(t===0){const b=rnd(2,9),c=rnd(2,6),a=b*c+rnd(3,40),d=rnd(1,15);e=`${a} − ${b} × ${c} + ${d}`;ans=a-b*c+d;steps=[`${b} × ${c} = ${b*c}`,`${a} − ${b*c} = ${a-b*c}`,`${a-b*c} + ${d} = ${ans}`];}
+  else if(t===1){const b=rnd(2,4),c=rnd(2,5),q=rnd(2,6),a=b*c*q,d=rnd(0,q);e=`${a} : (${b} × ${c}) − ${d}`;ans=q-d;steps=[`${b} × ${c} = ${b*c}`,`${a} : ${b*c} = ${q}`,`${q} − ${d} = ${ans}`];}
+  else if(t===2){const a=rnd(5,30),b=rnd(2,9),c=rnd(2,9);e=`${a} + ${b} × ${c}`;ans=a+b*c;steps=[`${b} × ${c} = ${b*c}`,`${a} + ${b*c} = ${ans}`];}
+  else if(t===3){const a=rnd(2,9),b=rnd(2,9),c=rnd(2,6);e=`(${a} + ${b}) × ${c}`;ans=(a+b)*c;steps=[`${a} + ${b} = ${a+b}`,`${a+b} × ${c} = ${ans}`];}
+  else if(t===4){const d=rnd(2,5),k=rnd(2,6),c=d*k;let a,b;do{a=rnd(2,9);b=rnd(2,9);}while(a*b<=k);e=`${a} × ${b} − ${c} : ${d}`;ans=a*b-k;steps=[`${a} × ${b} = ${a*b}`,`${c} : ${d} = ${k}`,`${a*b} − ${k} = ${ans}`];}
+  else{const a=rnd(30,90),b=rnd(3,15),c=rnd(2,12);e=`${a} − ${b} + ${c}`;ans=a-b+c;steps=[`${a} − ${b} = ${a-b}`,`${a-b} + ${c} = ${ans}`];}
+  return Q.num({prompt:`פתרו: ${m(e+' =')}`,answer:ans,
+    hint:'סדר הפעולות: 1) סוגריים 2) כפל וחילוק 3) חיבור וחיסור – משמאל לימין.'+(t===5?' כאן אין כפל – אז פשוט משמאל לימין, לפי הסדר!':''),
+    explain:steps.map(s=>m(s)).join('<br>')});
+}
+
+/* ================= 7. gematria ================= */
+const GEM={'א':1,'ב':2,'ג':3,'ד':4,'ה':5,'ו':6,'ז':7,'ח':8,'ט':9,'י':10,'כ':20,'ך':20,'ל':30,'מ':40,'ם':40,'נ':50,'ן':50,'ס':60,'ע':70,'פ':80,'ף':80,'צ':90,'ץ':90,'ק':100,'ר':200,'ש':300,'ת':400};
+const LETTERS='אבגדהוזחטיכלמנסעפצקרשת'.split('');
+const PLANTS=['רקפת','אלון','ורד','תמר','זית','גפן','חצב','כלנית','דקל','ברוש','אורן','תאנה','רימון','חמנית','נרקיס','שקד','חיטה','תפוח','לימון','סחלב'];
+const FOOT=['כדור','שער','גול','מגרש','שוער','פנדל','קורה','רשת','נבדל','גביע','קבוצה','מאמן'];
+const GEM_RULE='א עד ט הן האחדות (1 עד 9), י עד צ הן העשרות (10 עד 90), ק עד ת הן המאות (100 עד 400).';
+const gemTable=()=>`<div class="gtable">${LETTERS.map(l=>`<span><b>${l}</b>${GEM[l]}</span>`).join('')}</div>`;
+function gemDecode(){
+  const pl=Math.random()<0.5,w=pick(pl?PLANTS:FOOT);
+  const visual=`<div class="gem">${[...w].map(ch=>`<div class="gcell"><span class="gblank"></span><span class="gnum">${GEM[ch]}</span></div>`).join('')}</div>`;
+  return Q.text({prompt:`כל מספר הוא אות. גלו ${pl?'את שם הצמח':'מילה מעולם הכדורגל'} והקלידו אותה:`,visual,answer:w,
+    hint:GEM_RULE+gemTable(),
+    explain:`<b>${w}</b>: `+[...w].map(ch=>`${ch}=${GEM[ch]}`).join(', ')});
+}
+function gemLetter(){
+  const l=pick(LETTERS),v=GEM[l];
+  if(Math.random()<0.5)return Q.num({prompt:`מה הערך המספרי של האות <span class="bigl">${l}</span>?`,answer:v,hint:GEM_RULE+' ספרו באלף-בית.',explain:`${l} = ${m(v)}`});
+  const lead=String(v)[0];
+  const same=LETTERS.filter(x=>x!==l&&String(GEM[x])[0]===lead);
+  const others=shuffle(LETTERS.filter(x=>x!==l&&!same.includes(x)));
+  const opts=shuffle([l,...shuffle(same).slice(0,2),...others].slice(0,4));
+  return Q.choice({prompt:`איזו אות שווה ${m(v)}?`,options:opts.map(x=>`<span class="bigl">${x}</span>`),answer:opts.indexOf(l),
+    hint:GEM_RULE,explain:`${l} = ${m(v)}`});
+}
+function gemSum(){
+  const w=pick(['גול','שער','ורד','זית','תמר','דקל','כדור','גפן','רשת','אב','ים','חג','שקד']);
+  const vals=[...w].map(ch=>GEM[ch]),sum=vals.reduce((s,x)=>s+x,0);
+  return Q.num({prompt:`כמה שווה המילה <b>${w}</b> בגימטריה?<br><small>חברו את הערכים של כל האותיות.</small>`,answer:sum,
+    hint:GEM_RULE+gemTable(),explain:[...w].map(ch=>`${ch}=${GEM[ch]}`).join(', ')+'<br>'+m(vals.join(' + ')+' = '+sum)});
+}
+
+/* ================= 8. word problems ================= */
+const KIDS=[['תומר','m'],['שי','f'],['נועה','f'],['איתי','m'],['מאיה','f'],['עומר','m'],['יעל','f'],['אורי','m'],['רוני','f'],['גיל','m']];
+const vb=(g,mm,f)=>g==='m'?mm:f;
+const ITEMS=[
+  {s:'בקבוק מים',pl:'בקבוקי מים',p:[3,9]},{s:'מדבקת שחקן',pl:'מדבקות שחקנים',p:[2,6]},
+  {s:'זוג גרביים',pl:'זוגות גרביים',p:[12,19]},{s:'כרטיס למשחק',pl:'כרטיסים למשחק',p:[14,29]},
+  {s:'מחברת',pl:'מחברות',p:[6,18]},{s:'עט',pl:'עטים',p:[3,7]},{s:'חטיף',pl:'חטיפים',p:[4,9]}
+];
+const NIS='ש״ח';
+function wpBuy(){
+  const [n,g]=pick(KIDS),it=pick(ITEMS),p=rnd(it.p[0],it.p[1]),q=rnd(3,9),ans=p*q;
+  return Q.num({prompt:`מחיר ${it.s}: ${p} ${NIS}.<br>${n} ${vb(g,'קנה','קנתה')} ${q} ${it.pl}.<br>כמה ${vb(g,'שילם','שילמה')} ${n}?`,answer:ans,
+    hint:`${q} פעמים ${p} ${NIS} – איזה תרגיל זה?`,
+    explain:`פתרון: ${m(`${q} × ${p} = ${ans}`)}<br>תשובה מילולית: ${n} ${vb(g,'שילם','שילמה')} ${ans} ${NIS}.`});
+}
+function wpChange(){
+  const [n,g]=pick(KIDS);let it,bill,p,q,tot;
+  do{it=pick(ITEMS);bill=Math.random()<0.5?100:200;p=rnd(it.p[0],it.p[1]);q=rnd(3,9);tot=p*q;}while(tot>=bill||tot<=(bill===100?30:100));
+  return Q.num({prompt:`${n} ${vb(g,'קנה','קנתה')} ${q} ${it.pl}. מחיר ${it.s}: ${p} ${NIS}.<br>${n} ${vb(g,'שילם','שילמה')} בשטר של ${bill} ${NIS}. כמה עודף ${vb(g,'קיבל','קיבלה')}?`,answer:bill-tot,
+    hint:'שני שלבים: 1) כמה עלה הכול? (כפל) 2) כמה נשאר מהשטר? (חיסור)',
+    explain:`פתרון: ${m(`${q} × ${p} = ${tot}`)}<br>${m(`${bill} − ${tot} = ${bill-tot}`)}<br>תשובה מילולית: ${n} ${vb(g,'קיבל','קיבלה')} ${bill-tot} ${NIS} עודף.`});
+}
+function wpBill(){
+  const [n,g]=pick(KIDS),it=pick(ITEMS.filter(i=>i.p[1]>=12));let p,q;
+  do{p=rnd(it.p[0],it.p[1]);q=rnd(4,9);}while(p*q<=100||p*q>=200);
+  return Q.choice({prompt:`${n} ${vb(g,'קנה','קנתה')} ${q} ${it.pl}. מחיר ${it.s}: ${p} ${NIS}.<br>בארנק של ${n} יש שטר של 100 ${NIS} ושטר של 200 ${NIS}. באיזה שטר ${vb(g,'עליו','עליה')} להשתמש?`,
+    options:[`שטר של 100 ${NIS}`,`שטר של 200 ${NIS}`],answer:1,wide:true,
+    hint:'קודם חשבו כמה עולה הכול, ואז בדקו איזה שטר מספיק.',
+    explain:`הכול עולה ${m(`${q} × ${p} = ${p*q}`)} ${NIS} – יותר מ-100, לכן צריך את השטר של 200. (כך גם "מנמקים" במבדק.)`});
+}
+function wpTeams(){
+  if(Math.random()<0.5){
+    const teams=rnd(4,9),per=pick([5,6,7,8,11]),ans=teams*per;
+    return Q.num({prompt:`בליגה יש ${teams} קבוצות. בכל קבוצה ${per} שחקנים.<br>כמה שחקנים יש בליגה?`,answer:ans,
+      hint:`${teams} קבוצות, בכל אחת ${per} – זה כפל.`,explain:`פתרון: ${m(`${teams} × ${per} = ${ans}`)}<br>תשובה מילולית: בליגה יש ${ans} שחקנים.`});
+  }
+  const per=rnd(3,9),teams=rnd(3,8),tot=per*teams;
+  return Q.num({prompt:`${tot} ילדים באו לאימון. המאמן חילק אותם ל-${teams} קבוצות שוות.<br>כמה ילדים בכל קבוצה?`,answer:per,
+    hint:`לחלק ${tot} ל-${teams} חלקים שווים – זה חילוק.`,explain:`פתרון: ${m(`${tot} : ${teams} = ${per}`)}<br>תשובה מילולית: בכל קבוצה ${per} ילדים.`});
+}
+
+/* ================= 9. bar chart ================= */
+const PLAYERS=['עומרי','רון','איתי','נדב','אלון','גיא','ליאור','אביב','דניאל','יונתן','עידן','אריאל'];
+function chartSVG(d){
+  const x0=40,x1=332,y0=196,yT=22,mx=14,Y=v=>(y0-(v/mx)*(y0-yT)).toFixed(1);
+  let s=`<svg viewBox="0 0 340 232" width="340" style="direction:ltr" role="img" aria-label="דיאגרמת עמודות של גולים">`;
+  for(let v=0;v<=mx;v+=2)s+=`<line x1="${x0}" x2="${x1}" y1="${Y(v)}" y2="${Y(v)}" class="grid"/><text x="${x0-8}" y="${(+Y(v)+4).toFixed(1)}" text-anchor="end" font-size="11" fill="currentColor">${v}</text>`;
+  const slot=(x1-x0)/d.vals.length;
+  d.vals.forEach((v,i)=>{const cx=x0+slot*i+slot/2;s+=`<rect x="${(cx-18).toFixed(1)}" y="${Y(v)}" width="36" height="${(y0-Y(v)).toFixed(1)}" class="bar"/><text x="${cx.toFixed(1)}" y="${y0+22}" text-anchor="middle" font-size="14" font-weight="600" fill="currentColor">${d.names[i]}</text>`;});
+  s+=`<line x1="${x0}" x2="${x1}" y1="${y0}" y2="${y0}" stroke="currentColor" stroke-width="2"/>`;
+  return s+'</svg>';
+}
+function chartQ(t){
+  const names=shuffle(PLAYERS).slice(0,4),pool=shuffle(Array.from({length:14},(_,i)=>i+1));
+  let vals;
+  if(t===2){const s=pool.slice(0,3);vals=shuffle([...s,s[rnd(0,2)]]);}else vals=pool.slice(0,4);
+  const visual=`<div class="qv-col"><div class="ct">כמה גולים הבקיע כל שחקן העונה?</div>${chartSVG({names,vals})}</div>`;
+  const HINT='בדקו איפה נגמרת כל עמודה לעומת הקווים. עמודה שנגמרת בדיוק באמצע בין שני קווים – זה המספר שביניהם.';
+  const mx=Math.max(...vals),mn=Math.min(...vals);
+  if(t===0){const i=vals.indexOf(mx);return Q.choice({prompt:'מי הבקיע הכי הרבה גולים?',visual,options:names,answer:i,hint:'חפשו את העמודה הגבוהה ביותר.',explain:`${names[i]} – ${mx} גולים.`});}
+  if(t===1){const i=vals.indexOf(mn);return Q.choice({prompt:'מי הבקיע הכי מעט גולים?',visual,options:names,answer:i,hint:'חפשו את העמודה הנמוכה ביותר.',explain:`${names[i]} – ${mn} גולים.`});}
+  if(t===2){
+    const pairs=[];for(let i=0;i<4;i++)for(let j=i+1;j<4;j++)pairs.push([i,j]);
+    const good=pairs.find(([i,j])=>vals[i]===vals[j]);
+    const opts=shuffle([good,...shuffle(pairs.filter(p=>p!==good)).slice(0,3)]);
+    return Q.choice({prompt:'אילו שני שחקנים הבקיעו אותו מספר גולים?',visual,options:opts.map(([i,j])=>`${names[i]} ו${names[j]}`),answer:opts.indexOf(good),
+      hint:'חפשו שתי עמודות באותו גובה בדיוק.',explain:`${names[good[0]]} ו${names[good[1]]} – לכל אחד ${vals[good[0]]} גולים.`});
+  }
+  if(t===3){const sum=vals.reduce((a,b)=>a+b,0);return Q.num({prompt:'כמה גולים הבקיעו כל השחקנים ביחד?',visual,answer:sum,hint:HINT+' אחר כך חברו את כל ארבעת המספרים.',explain:m(vals.join(' + ')+' = '+sum)});}
+  const ord=[0,1,2,3].sort((a,b)=>vals[b]-vals[a]);const i=ord[rnd(0,1)],j=ord[rnd(2,3)];
+  return Q.num({prompt:`בכמה גולים הבקיע ${names[i]} יותר מ${names[j]}?`,visual,answer:vals[i]-vals[j],
+    hint:HINT+' ואז חסרו.',explain:`${names[i]}: ${vals[i]}, ${names[j]}: ${vals[j]}<br>${m(`${vals[i]} − ${vals[j]} = ${vals[i]-vals[j]}`)}`});
+}
+
+/* ================= 10. geometry ================= */
+const TRIS=[
+  {p:[[100,18],[30,140],[170,140]],s:'eq',a:'acute',t:[0,1,2],r:-1},
+  {p:[[150,40],[50,140],[150,140]],s:'iso',a:'right',t:[1,2],r:2},
+  {p:[[20,120],[180,40],[120,140]],s:'sca',a:'obtuse',t:[],r:-1},
+  {p:[[100,12],[55,145],[145,145]],s:'iso',a:'acute',t:[0,2],r:-1},
+  {p:[[40,40],[180,140],[40,140]],s:'sca',a:'right',t:[],r:2},
+  {p:[[100,92],[20,140],[180,140]],s:'iso',a:'obtuse',t:[0,2],r:-1},
+  {p:[[70,18],[20,140],[180,118]],s:'sca',a:'acute',t:[],r:-1}
+];
+const SIDE_N={eq:'שווה צלעות',iso:'שווה שוקיים',sca:'שונה צלעות'};
+const ANG_N={acute:'חד-זווית',right:'ישר-זווית',obtuse:'קהה-זווית'};
+const unit=(a,b)=>{const dx=b[0]-a[0],dy=b[1]-a[1],L=Math.hypot(dx,dy);return [dx/L,dy/L];};
+const f1=x=>(+x).toFixed(1);
+function triSVG(T){
+  const p=Math.random()<0.5?T.p.map(([x,y])=>[200-x,y]):T.p;
+  let s=`<svg viewBox="0 0 200 160" width="200" role="img" aria-label="משולש"><polygon points="${p.map(q=>q.join(',')).join(' ')}" class="shape"/>`;
+  T.t.forEach(i=>{
+    const A=p[i],B=p[(i+1)%3],M=[(A[0]+B[0])/2,(A[1]+B[1])/2],d=unit(A,B),n=[-d[1],d[0]];
+    [-3.5,3.5].forEach(o=>{const c=[M[0]+d[0]*o,M[1]+d[1]*o];s+=`<line x1="${f1(c[0]-n[0]*7)}" y1="${f1(c[1]-n[1]*7)}" x2="${f1(c[0]+n[0]*7)}" y2="${f1(c[1]+n[1]*7)}" class="tick"/>`;});
+  });
+  if(T.r>=0){
+    const V=p[T.r],a=unit(V,p[(T.r+1)%3]),b=unit(V,p[(T.r+2)%3]),k=14;
+    s+=`<polyline points="${f1(V[0]+a[0]*k)},${f1(V[1]+a[1]*k)} ${f1(V[0]+a[0]*k+b[0]*k)},${f1(V[1]+a[1]*k+b[1]*k)} ${f1(V[0]+b[0]*k)},${f1(V[1]+b[1]*k)}" class="ra"/>`;
+  }
+  return s+'</svg>';
+}
+function triSidesQ(){
+  const T=pick(TRIS),opts=['eq','iso','sca'];
+  const why={eq:'כל שלוש הצלעות מסומנות באותו סימן – כולן שוות.',iso:'שתי צלעות מסומנות באותו סימן – שתיים שוות (השוקיים).',sca:'אין סימונים – כל הצלעות באורך שונה.'}[T.s];
+  return Q.choice({prompt:'איך נקרא המשולש <b>לפי הצלעות</b>?<br><small>צלעות עם אותו סימון שוות זו לזו.</small>',visual:triSVG(T),
+    options:opts.map(o=>SIDE_N[o]),answer:opts.indexOf(T.s),hint:'ספרו כמה צלעות מסומנות באותו סימן.',explain:why});
+}
+function triAnglesQ(){
+  const T=pick(TRIS),opts=['acute','right','obtuse'];
+  const why={acute:'כל הזוויות שלו קטנות מזווית ישרה ("חדות").',right:'יש לו זווית ישרה – הריבוע הקטן בפינה.',obtuse:'יש לו זווית אחת גדולה מזווית ישרה – פתוחה ורחבה.'}[T.a];
+  return Q.choice({prompt:'איך נקרא המשולש <b>לפי הזוויות</b>?',visual:triSVG(T),
+    options:opts.map(o=>ANG_N[o]),answer:opts.indexOf(T.a),hint:'יש ריבוע קטן באחת הפינות? יש זווית רחבה במיוחד? אם לא – כל הזוויות חדות.',explain:why});
+}
+const SHAPES=[
+  {g:'<polygon points="100,12 150,150 100,112 50,150"/>',poly:true,v:4},
+  {g:'<ellipse cx="100" cy="80" rx="80" ry="45"/>',poly:false,why:'יש לה קו עקום – אין לה צלעות ישרות.'},
+  {g:'<rect x="30" y="35" width="140" height="90"/>',poly:true,v:4,pts:[[30,35],[170,35],[170,125],[30,125]]},
+  {g:'<polyline points="80,40 130,20 130,140 70,140 70,72"/>',poly:false,why:'הצורה לא סגורה – יש בה פתח.'},
+  {g:'<path d="M100,10 Q110,70 170,80 Q110,90 100,150 Q90,90 30,80 Q90,70 100,10 Z"/>',poly:false,why:'הצלעות שלה עקומות.'},
+  {g:'<polygon points="100,20 165,70 165,140 35,140 35,70"/>',poly:true,v:5},
+  {g:'<polygon points="60,20 140,20 180,80 140,140 60,140 20,80"/>',poly:true,v:6},
+  {g:'<path d="M20,120 A80,80 0 0 1 180,120 Z"/>',poly:false,why:'יש לה קו עקום (קשת).'},
+  {g:'<polygon points="30,20 90,20 90,90 170,90 170,140 30,140"/>',poly:true,v:6},
+  {g:'<polygon points="100,20 175,140 25,140"/>',poly:true,v:3},
+  {g:'<circle cx="100" cy="80" r="60"/>',poly:false,why:'עיגול בנוי מקו עקום אחד – אין לו צלעות ישרות.'},
+  {g:'<polyline points="30,140 30,30 170,30 170,140"/>',poly:false,why:'הצורה לא סגורה – חסרה צלע בתחתית.'}
+];
+const shapeSVG=(inner,extra)=>`<svg viewBox="0 0 200 160" width="200" role="img" aria-label="צורה"><g class="shape">${inner}</g>${extra||''}</svg>`;
+function shapePts(sh){
+  if(sh.pts)return sh.pts;
+  const mm=sh.g.match(/points="([^"]+)"/);
+  return mm?mm[1].trim().split(/\s+/).map(p=>p.split(',').map(Number)):[];
+}
+function polyQ(){
+  const sh=pick(SHAPES);
+  return Q.choice({prompt:'האם הצורה היא מצולע?',visual:shapeSVG(sh.g),options:['כן, מצולע','לא מצולע'],answer:sh.poly?0:1,
+    hint:'מצולע = צורה <b>סגורה</b> שכל הקווים שלה <b>ישרים</b>.',
+    explain:sh.poly?`כן! היא סגורה וכל הצלעות שלה ישרות. יש לה ${sh.v} צלעות ו-${sh.v} קודקודים.`:`לא – ${sh.why}`});
+}
+function vertQ(){
+  const sh=pick(SHAPES.filter(s=>s.poly)),pts=shapePts(sh);
+  const dots=pts.map(([x,y])=>`<circle cx="${x}" cy="${y}" r="7" class="vdot"/>`).join('');
+  return Q.num({prompt:'כמה קודקודים יש למצולע?',visual:shapeSVG(sh.g),answer:sh.v,
+    hint:'קודקוד = הנקודה שבה שתי צלעות נפגשות. ספרו את כל ה"פינות" – גם את אלה שפונות פנימה.',
+    explain:`${sh.v} קודקודים (צבועים בכחול):`+`<div class="q-visual">${shapeSVG(sh.g,dots)}</div>`});
+}
+const PARA=[
+  {p:[[30,35],[170,35],[170,125],[30,125]],pairs:[[0,2],[1,3]]},
+  {p:[[50,20],[150,20],[150,120],[50,120]],pairs:[[0,2],[1,3]]},
+  {p:[[60,30],[140,30],[180,130],[20,130]],pairs:[[0,2]]},
+  {p:[[100,20],[175,140],[25,140]],pairs:[]},
+  {p:[[65,19],[135,19],[170,80],[135,141],[65,141],[30,80]],pairs:[[0,3],[1,4],[2,5]]},
+  {p:[[60,30],[180,30],[140,130],[20,130]],pairs:[[0,2],[1,3]]},
+  {p:[[100,20],[165,70],[165,140],[35,140],[35,70]],pairs:[[1,3]]}
+];
+function parallelQ(){
+  const S=pick(PARA),poly=`<polygon points="${S.p.map(q=>q.join(',')).join(' ')}"/>`;
+  const cols=['#D23B3B','#1E9B4B','#E08A00'],n=S.p.length;
+  const hl=S.pairs.map((pr,k)=>pr.map(i=>{const A=S.p[i],B=S.p[(i+1)%n];return `<line x1="${A[0]}" y1="${A[1]}" x2="${B[0]}" y2="${B[1]}" stroke="${cols[k]}" stroke-width="7" stroke-linecap="round"/>`;}).join('')).join('');
+  return Q.num({prompt:'כמה <b>זוגות</b> של צלעות מקבילות יש למצולע?',visual:shapeSVG(poly),answer:S.pairs.length,
+    hint:'צלעות מקבילות = שני קווים ישרים שהולכים באותו כיוון ולעולם לא ייפגשו, כמו פסי רכבת.',
+    explain:(S.pairs.length?`${S.pairs.length===1?'זוג אחד':S.pairs.length+' זוגות'} (כל זוג בצבע אחר):`:'אין כאן צלעות מקבילות – כל שתי צלעות היו נפגשות אם נמשיך אותן.')+(S.pairs.length?`<div class="q-visual">${shapeSVG(poly,hl)}</div>`:'')});
+}
+
+/* ================= 11. measurement & time ================= */
+function measCmp(){
+  const t=rnd(0,5);let L,R,fact,unitName;
+  if(t===0){const a=rnd(1,9),c=Math.random()<0.4?a*100:pick([a*10,a*100+pick([-50,50,10]),a*1000]);L={h:`${a} מ׳`,v:a*100};R={h:`${fmt(c)} ס״מ`,v:c};fact='1 מ׳ = 100 ס״מ';unitName='ס״מ';}
+  else if(t===1){const x=pick([10,20,30,40,50]),mins=pick([90,70,80,100,60+x]);L={h:`${mins} דקות`,v:mins};R={h:`שעה ו-${x} דקות`,v:60+x};fact='שעה = 60 דקות';unitName='דקות';}
+  else if(t===2){const h=pick([12,24,36,20]);L={h:'יממה',v:24};R={h:`${h} שעות`,v:h};fact='יממה = 24 שעות';unitName='שעות';}
+  else if(t===3){const k=rnd(1,5),mm=pick([k*100,k*1000,k*1000+500,k*10]);L={h:`${fmt(mm)} מ׳`,v:mm};R={h:`${k} ק״מ`,v:k*1000};fact='1 ק״מ = 1,000 מ׳';unitName='מ׳';}
+  else if(t===4){const k=rnd(1,5),g=pick([k*100,k*1000,k*1000+250]);L={h:`${k} ק״ג`,v:k*1000};R={h:`${fmt(g)} גרם`,v:g};fact='1 ק״ג = 1,000 גרם';unitName='גרם';}
+  else{const w=rnd(1,3),d=pick([w*7,w*7+1,w*5,w*7-2]);L={h:w===1?'שבוע':w===2?'שבועיים':`${w} שבועות`,v:w*7};R={h:`${d} ימים`,v:d};fact='שבוע = 7 ימים';unitName='ימים';}
+  if(Math.random()<0.5)[L,R]=[R,L];
+  const s=sym(L.v,R.v),Lh=`<span class="w" dir="rtl">${L.h}</span>`,Rh=`<span class="w" dir="rtl">${R.h}</span>`;
+  return Q.cmp({left:Lh,right:Rh,answer:s,
+    hint:`זכרו: ${fact}. המירו את שני הצדדים לאותה יחידה ורק אז השוו.`,
+    explain:`${L.h} = ${m(fmt(L.v))} ${unitName}<br>${R.h} = ${m(fmt(R.v))} ${unitName}`});
+}
+function measConv(){
+  const t=rnd(0,5);
+  if(t===0){const a=rnd(2,9);return Q.num({prompt:`כמה סנטימטרים יש ב-${a} מטרים?`,answer:a*100,hint:'במטר אחד יש 100 ס״מ.',explain:m(`${a} × 100 = ${a*100}`)+' ס״מ'});}
+  if(t===1){const x=pick([5,10,15,20,25,30,40,45,50]);return Q.num({prompt:`כמה דקות יש בשעה ו-${x} דקות?`,answer:60+x,hint:'בשעה אחת יש 60 דקות.',explain:m(`60 + ${x} = ${60+x}`)+' דקות'});}
+  if(t===2){const h=rnd(2,4);return Q.num({prompt:`כמה דקות יש ב-${h} שעות?`,answer:h*60,hint:'בכל שעה יש 60 דקות.',explain:m(`${h} × 60 = ${h*60}`)+' דקות'});}
+  if(t===3){const k=rnd(2,9);return Q.num({prompt:`כמה מטרים הם ${k} קילומטרים?`,answer:k*1000,hint:'בקילומטר אחד יש 1,000 מטר.',explain:m(`${k} × 1,000 = ${fmt(k*1000)}`)+' מטר'});}
+  if(t===4){const w=rnd(2,5);return Q.num({prompt:`כמה ימים יש ב-${w} שבועות?`,answer:w*7,hint:'בשבוע יש 7 ימים.',explain:m(`${w} × 7 = ${w*7}`)+' ימים'});}
+  const Ln=pick([50,100]),n=Ln===100?pick([5,10,20]):pick([10,20,40]),ans=n*Ln;
+  return Q.num({prompt:`שחקן רץ ${n} פעמים לאורך מגרש שאורכו ${Ln} מטר. כמה מטרים רץ בסך הכול?`,answer:ans,
+    hint:`${n} פעמים ${Ln} מטר – זה כפל.`,explain:m(`${n} × ${Ln} = ${fmt(ans)}`)+' מטר'+(ans%1000===0?` – זה בדיוק ${ans/1000===1?'קילומטר אחד':ans/1000+' ק״מ'}!`:'')});
+}
+function measMatch(){
+  const mins=pick([75,90,90,100,110,130,150,80]);
+  const hs=h=>h===1?'שעה':h===2?'שעתיים':`${h} שעות`;
+  const hm=(h,r)=>r===0?hs(h):`${hs(h)} ו-${r} דקות`;
+  const h=Math.floor(mins/60),r=mins%60,correct=hm(h,r);
+  const wrongs=uniq([`${Math.floor(mins/10)} שעות`,hm(h,(r+10)%60||10),hm(h+1,r),mins>=100?hm(1,mins-100):hm(h,(r+20)%60||20)]).filter(x=>x!==correct).slice(0,3);
+  const opts=shuffle([correct,...wrongs]);
+  return Q.choice({prompt:mins===90?'משחק כדורגל נמשך 90 דקות. כמה זמן זה?':`האימון נמשך ${mins} דקות. כמה זמן זה?`,
+    options:opts,answer:opts.indexOf(correct),wide:true,
+    hint:'בשעה יש 60 דקות (לא 100!). כמה שעות שלמות נכנסות, וכמה דקות נשארות?',
+    explain:m(`${mins} = 60${h===2?' + 60':''} + ${r}`)+` → ${correct}`});
+}
+
+/* ================= stations ================= */
+const STATIONS=[
+  {id:'pv',icon:'🔢',name:'ערך המקום',gens:[pvPrevNext,pvWordsToNum,pvNumToWords,pvDigits,pvWhoAmI,pvBuild,pvScale]},
+  {id:'cmp',icon:'⚖️',name:'השוואה, סדרות וישר המספרים',gens:[cmpNums,pvCompareWords,seqNext,seqRule,numLine]},
+  {id:'add',icon:'➕',name:'חיבור וחיסור',gens:[addCarry,subZero,cmpNoSolve,mentalAdd]},
+  {id:'mul',icon:'✖️',name:'כפל',gens:[mulTable,mulTens,mulDist,mulVertical,mulZeroOne]},
+  {id:'div',icon:'➗',name:'חילוק, אומדן ומתחלקים',gens:[divTable,divBeyond,estimate,divisPick,divisComplete]},
+  {id:'ops',icon:'🧮',name:'סדר פעולות חשבון',gens:[0,1,2,3,4,5].map(t=>()=>opsGen(t))},
+  {id:'gem',icon:'🔤',name:'גימטריה – האותיות כמספרים',gens:[gemDecode,gemLetter,gemSum]},
+  {id:'word',icon:'🛒',name:'בעיות מילוליות',gens:[wpBuy,wpChange,wpBill,wpTeams]},
+  {id:'chart',icon:'📊',name:'קריאת דיאגרמה',gens:[0,1,2,3,4].map(t=>()=>chartQ(t))},
+  {id:'geo',icon:'📐',name:'משולשים ומצולעים',gens:[triSidesQ,triAnglesQ,polyQ,vertQ,parallelQ]},
+  {id:'meas',icon:'📏',name:'מידות וזמן',gens:[measCmp,measConv,measMatch]}
+];
+function makeQ(gen){for(let k=0;k<5;k++){try{return gen();}catch(e){console.error(e);}}return mulTable();}
+
+/* ================= seeded questions (an unfinished game can resume) ================= */
+const NATIVE_RANDOM=Math.random;
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function seeded(seed,fn){Math.random=mulberry32(seed);try{return fn();}finally{Math.random=NATIVE_RANDOM;}}
+const newSeed=()=>Math.floor(NATIVE_RANDOM()*4294967296);
+
+/* ================= column notebook (מחברת משבצות) ================= */
+const PLACE=['יחידות','עשרות','מאות','אלפים','עשרות האלפים','מאות האלפים'];
+const placeThe=p=>p<4?'ה'+PLACE[p]:PLACE[p];
+const digitAt=(s,p)=>p<s.length?s[s.length-1-p]:'';
+let gridSeq=0,curGrid=null;
+function gridDims(a,b,op){
+  a=Number(a);b=Number(b);
+  if(op==='×'&&b>=10&&a<10)[a,b]=[b,a];
+  const A=String(a),B=String(b);
+  return {a,b,A,B,W:op==='+'?Math.max(A.length,B.length)+1:op==='−'?A.length:A.length+B.length};
+}
+const helperOn=(g,p)=>g.op==='−'?p<g.A.length:p>=1;
+function makeGrid(a,b,op,mode){
+  const d=gridDims(a,b,op);
+  return Object.assign(d,{id:'nb'+(++gridSeq),op,mode,car:Array(d.W).fill(''),res:Array(d.W).fill(''),sel:{r:'res',p:0},bad:-1,locked:false});
+}
+/* the correct carries / borrows, column by column */
+function columnPlan(a,b,op){
+  const g=gridDims(a,b,op),{A,B,W}=g,car=Array(W).fill(''),res=Array(W).fill('');
+  const v=op==='+'?g.a+g.b:op==='−'?g.a-g.b:g.a*g.b,V=String(v);
+  for(let p=0;p<V.length;p++)res[p]=digitAt(V,p);
+  if(op==='+'){const L=Math.max(A.length,B.length);let c=0;for(let p=0;p<L;p++){const s=(+digitAt(A,p)||0)+(+digitAt(B,p)||0)+c;c=Math.floor(s/10);if(c&&p+1<L)car[p+1]=String(c);}}
+  else if(op==='×'){let c=0;for(let p=0;p<A.length;p++){const s=(+digitAt(A,p))*g.b+c;c=Math.floor(s/10);if(c&&p+1<A.length)car[p+1]=String(c);}}
+  else{
+    const t=[...A].reverse().map(Number),ch=Array(A.length).fill(false);
+    for(let p=0;p<A.length;p++){
+      const d=+digitAt(B,p)||0;
+      if(t[p]<d){let j=p+1;while(t[j]===0)j++;t[j]--;ch[j]=true;for(let k=j-1;k>p;k--){t[k]=9;ch[k]=true;}t[p]+=10;ch[p]=true;}
+      if(ch[p])car[p]=String(t[p]);
+    }
+  }
+  return Object.assign(g,{op,v,car,res});
+}
+const nc=(inner,cls='')=>`<span class="nc ${cls}">${inner}</span>`;
+function nbHTML(g){
+  let h=`<div class="nbwrap"><div class="nb" id="${g.id}" dir="ltr" role="group" aria-label="תרגיל בטור: ${g.a} ${g.op} ${g.b}" style="--cols:${g.W+1}">`+nc('');
+  for(let p=g.W-1;p>=0;p--)h+=nc(helperOn(g,p)?`<button type="button" class="cell hp" data-r="car" data-p="${p}" aria-label="${g.op==='−'?'פריטה: ספרה חדשה מעל '+placeThe(p):'העברה לעמודת '+placeThe(p)}"></button>`:'','hw');
+  h+=nc('');
+  for(let p=g.W-1;p>=0;p--)h+=`<span class="nc dg" data-top="${p}">${digitAt(g.A,p)}</span>`;
+  h+=nc(g.op,'dg op');
+  for(let p=g.W-1;p>=0;p--)h+=nc(digitAt(g.B,p),'dg');
+  h+=nc('','rl');
+  for(let p=g.W-1;p>=0;p--)h+=nc(`<button type="button" class="cell rc" data-r="res" data-p="${p}" aria-label="ספרת ${placeThe(p)} בתוצאה"></button>`,'rl');
+  return h+'</div></div>';
+}
+function workedHTML(a,b,op){
+  const P=columnPlan(a,b,op),{A,B,W,car,res}=P;
+  let h=`<div class="nbwrap"><div class="nb show" dir="ltr" role="img" aria-label="${P.a} ${op} ${P.b} = ${P.v}" style="--cols:${W+1}">`+nc('');
+  for(let p=W-1;p>=0;p--)h+=nc(car[p],'hw pen'+(car[p].length>1?' two':''));
+  h+=nc('');
+  for(let p=W-1;p>=0;p--)h+=nc(digitAt(A,p),'dg'+(op==='−'&&car[p]?' struck':''));
+  h+=nc(op,'dg op');
+  for(let p=W-1;p>=0;p--)h+=nc(digitAt(B,p),'dg');
+  h+=nc('','rl');
+  for(let p=W-1;p>=0;p--)h+=nc(res[p],'rl dg pen');
+  return h+'</div></div>';
+}
+function paintGrid(g){
+  const el=document.getElementById(g.id);if(!el)return;
+  el.querySelectorAll('button[data-r]').forEach(b=>{
+    const r=b.dataset.r,p=+b.dataset.p,v=(r==='car'?g.car:g.res)[p];
+    if(b.textContent!==v)b.textContent=v;
+    b.classList.toggle('sel',!g.locked&&g.sel.r===r&&g.sel.p===p);
+    b.classList.toggle('bad',r==='res'&&g.bad===p);
+    b.classList.toggle('two',v.length>1);
+    b.classList.toggle('on',v!=='');
+    b.disabled=g.locked;
+  });
+  if(g.op==='−')el.querySelectorAll('[data-top]').forEach(s=>s.classList.toggle('struck',g.car[+s.dataset.top]!==''));
+}
+function wireGrid(g){
+  const el=document.getElementById(g.id);if(!el)return;
+  el.addEventListener('click',e=>{const b=e.target.closest('button[data-r]');if(!b||g.locked)return;g.sel={r:b.dataset.r,p:+b.dataset.p};curGrid=g;paintGrid(g);});
+  paintGrid(g);
+}
+function moveSel(g,dir){
+  let {r,p}=g.sel;
+  if(dir==='U'){if(helperOn(g,p))r='car';}
+  else if(dir==='D')r='res';
+  else{const step=dir==='L'?1:-1;let np=p+step;while(r==='car'&&np>=0&&np<g.W&&!helperOn(g,np))np+=step;if(np>=0&&np<g.W)p=np;}
+  g.sel={r,p};
+}
+function gridKey(g,k){
+  if(g.locked)return;
+  curGrid=g;
+  const {r,p}=g.sel,arr=r==='car'?g.car:g.res;
+  if(/^\d$/.test(k)){
+    if(r==='res'){g.res[p]=k;if(g.bad===p)g.bad=-1;if(p<g.W-1)g.sel={r:'res',p:p+1};}
+    else if(g.op==='−')g.car[p]=g.car[p]==='1'?'1'+k:k;
+    else{g.car[p]=k;g.sel={r:'res',p};}
+  }else if(k==='del'){
+    if(arr[p]!==''){arr[p]=arr[p].slice(0,-1);if(r==='res'&&g.bad===p)g.bad=-1;}
+    else if(r==='res'&&p>0){g.sel={r:'res',p:p-1};g.res[p-1]='';if(g.bad===p-1)g.bad=-1;}
+  }else if(k==='clr'){g.car.fill('');g.res.fill('');g.bad=-1;g.sel={r:'res',p:0};}
+  else moveSel(g,k);
+  paintGrid(g);
+}
+function gridValue(g){
+  let s='',started=false,gap=false;
+  for(let p=g.W-1;p>=0;p--){const d=g.res[p];if(d===''){if(started)gap=true;}else{if(gap)break;started=true;s+=d;}}
+  if(!started)return {empty:true};
+  if(gap)return {gap:true};
+  return {v:Number(s)};
+}
+function firstBadCol(g,ans){
+  const S=String(ans);
+  for(let p=0;p<g.W;p++){const e=digitAt(S,p),v=g.res[p];if(v===e)continue;if(e===''&&(v===''||v==='0'))continue;return p;}
+  return -1;
+}
+function padHTML(g){
+  return `<div class="pad" dir="ltr" data-g="${g.id}">${[1,2,3,4,5,6,7,8,9,0].map(d=>`<button type="button" class="key" data-k="${d}">${d}</button>`).join('')}<button type="button" class="key del" data-k="del" aria-label="מחיקת ספרה">⌫</button>${g.mode==='answer'?'<button type="button" class="kick padkick" data-k="ok">בעיטה ⚽</button>':'<button type="button" class="key clr" data-k="clr">ניקוי הטור</button>'}</div>`;
+}
+function wirePad(g){
+  const el=document.querySelector(`.pad[data-g="${g.id}"]`);if(!el)return;
+  el.addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b||b.disabled)return;const k=b.dataset.k;if(k==='ok')return submitGrid();gridKey(g,k);});
+}
+function onGridKeydown(e){
+  const g=curGrid;
+  if(!g||g.locked||!document.getElementById(g.id))return;
+  const t=e.target;if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA'))return;
+  if(e.key==='Enter'){if(g.mode==='answer'){e.preventDefault();submitGrid();}return;}
+  const map={ArrowLeft:'L',ArrowRight:'R',ArrowUp:'U',ArrowDown:'D',Backspace:'del',Delete:'del'};
+  const k=/^\d$/.test(e.key)?e.key:map[e.key];
+  if(!k)return;
+  e.preventDefault();gridKey(g,k);
+}
+
+/* ================= scratch column (טיוטה בטור) ================= */
+const SCRATCH={word:'×',mul:'×',div:'×',chart:'+'};
+function scratchBox(defOp){
+  return `<div class="scr" id="scr" hidden>
+    <div class="scr-t">כותבים כאן תרגיל, ופותרים אותו בטור בלי דף ועט.</div>
+    <div class="scr-build" dir="ltr">
+      <input id="sa" inputmode="numeric" maxlength="5" autocomplete="off" aria-label="המספר העליון">
+      <div class="ops3" role="group" aria-label="פעולה">${['+','−','×'].map(o=>`<button type="button" class="opb" data-op="${o}" aria-pressed="${o===defOp}">${o}</button>`).join('')}</div>
+      <input id="sb" inputmode="numeric" maxlength="5" autocomplete="off" aria-label="המספר התחתון">
+      <button type="button" class="kick sm" id="sgo">לטור</button>
+    </div>
+    <div class="toast" id="scrMsg" aria-live="polite"></div>
+    <div id="scrWork"></div>
+  </div>`;
+}
+function wireScratch(defOp){
+  let op=defOp;
+  const box=$('#scr'),btn=$('#scrBtn');
+  btn.onclick=()=>{box.hidden=!box.hidden;btn.setAttribute('aria-expanded',String(!box.hidden));if(!box.hidden){if(G.scratch)curGrid=G.scratch;else $('#sa').focus();}};
+  box.querySelectorAll('.opb').forEach(b=>b.onclick=()=>{op=b.dataset.op;box.querySelectorAll('.opb').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));});
+  const build=()=>{
+    const msg=$('#scrMsg'),a=clean($('#sa').value),b=clean($('#sb').value);
+    msg.textContent='';
+    if(!a||!b){msg.textContent='כתבו מספר בכל אחת משתי המשבצות.';return;}
+    if(!/^\d{1,5}$/.test(a)||!/^\d{1,5}$/.test(b)){msg.textContent='רק מספרים שלמים, עד 5 ספרות.';return;}
+    const x=+a,y=+b;
+    if(op==='−'&&x<y){msg.textContent='בחיסור בטור המספר הגדול כתוב למעלה. החליפו ביניהם.';return;}
+    if(op==='×'&&x>=10&&y>=10){
+      const L=Math.max(x,y),s=Math.min(x,y);
+      msg.innerHTML=s%10===0?`בטור כופלים במספר של ספרה אחת. חשבו ${m(`${L} × ${s/10}`)}, ואז הוסיפו 0 בסוף.`:`בטור כופלים במספר של ספרה אחת. פרקו: ${m(`${L} × ${s} = ${L} × ${s-s%10} + ${L} × ${s%10}`)}`;
+      return;
+    }
+    const g=makeGrid(x,y,op,'scratch');G.scratch=g;
+    $('#scrWork').innerHTML=nbHTML(g)+padHTML(g);
+    wireGrid(g);wirePad(g);curGrid=g;
+  };
+  $('#sgo').onclick=build;
+  ['#sa','#sb'].forEach(s=>{$(s).onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();build();}};});
+}
+
+/* ================= progress: saved on the device and in the account ================= */
+const STORE_KEY='mathLeague.v2',OLD_KEY='mathLeague.v1',LOG_MAX=80;
+const blank=()=>({v:2,name:'',named:false,best:{},cup:null,gen:{},st:{},log:[],days:{},cur:null,upd:0,ep:0});
+let store=blank();
+function loadStore(){
+  try{
+    const s=localStorage.getItem(STORE_KEY);
+    if(s){store=Object.assign(blank(),JSON.parse(s));return;}
+    const o=localStorage.getItem(OLD_KEY);
+    if(o){const x=JSON.parse(o);store=Object.assign(blank(),{name:x.name||'',named:!!x.named,best:x.best||{},cup:x.cup==null?null:x.cup});}
+  }catch(e){}
+}
+function saveLocal(){try{localStorage.setItem(STORE_KEY,JSON.stringify(store));}catch(e){}}
+function saveStore(){store.upd=Date.now();saveLocal();Sync.push();}
+function mergeStores(L,R){
+  const N=(R.upd||0)>(L.upd||0)?R:L,O=N===R?L:R;
+  const epL=L.ep||0,epR=R.ep||0;
+  if(epL!==epR)return Object.assign(blank(),JSON.parse(JSON.stringify(epL>epR?L:R)));   // a reset on one side wins outright
+  const M=Object.assign(blank(),JSON.parse(JSON.stringify(N)));
+  for(const k of Object.keys(O.best||{}))M.best[k]=Math.max(M.best[k]||0,O.best[k]||0);
+  if(O.cup!=null)M.cup=M.cup==null?O.cup:Math.max(M.cup,O.cup);
+  if(!M.name&&O.name)M.name=O.name;
+  M.named=!!(L.named||R.named);
+  for(const k of Object.keys(O.gen||{}))if(!M.gen[k])M.gen[k]=O.gen[k];
+  for(const k of Object.keys(O.st||{}))if(!M.st[k])M.st[k]=O.st[k];
+  for(const k of Object.keys(O.days||{}))M.days[k]=Math.max(M.days[k]||0,O.days[k]||0);
+  const seen=new Set(M.log.map(e=>e.t));
+  (O.log||[]).forEach(e=>{if(!seen.has(e.t))M.log.push(e);});
+  M.log.sort((x,y)=>y.t-x.t);M.log=M.log.slice(0,LOG_MAX);
+  return M;
+}
+/* ---- where progress is kept: the claude.ai account (db), or a Supabase project for the self-hosted copy ---- */
+const CFG=(typeof window!=='undefined'&&window.LEAGUE_CONFIG)||{};
+const CLOUD=!!(CFG.supabaseUrl&&CFG.supabaseKey);
+const PLAYER_KEY='mathLeague.player',PC_ALPHA='0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+function newPlayerCode(){const b=new Uint8Array(12);crypto.getRandomValues(b);let t='';for(const x of b)t+=PC_ALPHA[x&31];return t.slice(0,4)+'-'+t.slice(4,8)+'-'+t.slice(8);}
+function normCode(t){const x=String(t||'').toUpperCase().replace(/[\s\-–_.]/g,'').replace(/O/g,'0').replace(/[IL]/g,'1');return /^[0-9A-HJKMNP-TV-Z]{12}$/.test(x)?x.slice(0,4)+'-'+x.slice(4,8)+'-'+x.slice(8):null;}
+const getPlayer=()=>{try{return normCode(localStorage.getItem(PLAYER_KEY));}catch(e){return null;}};
+const setPlayer=c=>{try{localStorage.setItem(PLAYER_KEY,c);}catch(e){}};
+const playerLink=c=>location.origin+location.pathname+'#p='+c;
+async function sbCall(fn,args){
+  const h={'Content-Type':'application/json',apikey:CFG.supabaseKey};
+  if(/^eyJ/.test(CFG.supabaseKey))h.Authorization='Bearer '+CFG.supabaseKey;   // legacy anon keys are JWTs; sb_publishable_ keys go in apikey only
+  let r;
+  try{r=await fetch(String(CFG.supabaseUrl).replace(/\/+$/,'')+'/rest/v1/rpc/'+fn,{method:'POST',headers:h,body:JSON.stringify(args)});}
+  catch(e){const x=new Error('network');x.code='unavailable';throw x;}
+  if(!r.ok){const x=new Error('http '+r.status);x.status=r.status;x.code=(r.status>=500||r.status===408||r.status===429)?'unavailable':'refused';throw x;}
+  const t=await r.text();return t?JSON.parse(t):null;
+}
+const serverBackend=code=>({kind:'server',code,load:()=>sbCall('get_progress',{p_code:code}),save:d=>sbCall('save_progress',{p_code:code,p_data:d})});
+const canon=o=>JSON.stringify(o,(k,v)=>v&&typeof v==='object'&&!Array.isArray(v)?Object.keys(v).sort().reduce((a,x)=>(a[x]=v[x],a),{}):v);
+const Sync={
+  be:null,state:'local',timer:null,busy:false,dirty:false,retried:false,lastPull:0,
+  async init(){
+    if(CLOUD){const pc=getPlayer();if(!pc||!store.named){paintSync();return;}this.be=serverBackend(pc);this.state='connecting';paintSync();return this.push(true);}
+    const c=window.claude;
+    if(!c||typeof c.use!=='function')return;
+    this.state='connecting';paintSync();
+    try{
+      const [db,user]=await Promise.all([c.use('db'),c.use('user')]);
+      const uid=db&&user?await user.id():null;
+      if(!uid){this.state='local';paintSync();return;}
+      const ref=db.doc('data/users/'+uid+'/progress');
+      this.be={kind:'account',load:async()=>{const snap=await ref.get();return snap.exists?JSON.parse(JSON.stringify(snap.data())):null;},save:d=>ref.set(d)};
+    }catch(e){this.state='local';paintSync();return;}
+    this.push(true);
+  },
+  push(now){
+    if(!this.be)return;
+    this.dirty=true;clearTimeout(this.timer);
+    this.timer=setTimeout(()=>this.flush(),now?0:1200);
+  },
+  /* every save first reads what the other devices saved and merges it in, then writes the result */
+  async flush(){
+    if(!this.be||this.busy||!this.dirty)return;
+    const be=this.be;
+    this.busy=true;this.dirty=false;if(this.state!=='connecting')this.state='saving';paintSync();
+    let ok=false;
+    try{
+      const remote=await be.load();
+      if(be!==this.be)throw Object.assign(new Error('switched'),{code:'switched'});
+      if(remote&&remote.v===2){
+        const cur=store.cur,before=canon(sanitizeStore(store));
+        store=mergeStores(store,sanitizeStore(remote));store.cur=cur;saveLocal();
+        if(canon(sanitizeStore(store))!==before)onRemoteMerged();
+      }
+      await be.save(JSON.parse(JSON.stringify(store)));
+      ok=true;this.state='cloud';this.retried=false;this.lastPull=Date.now();
+    }catch(e){
+      const code=e&&e.code;
+      if(code==='switched'){ok=true;this.dirty=true;}
+      else if(be.kind==='account'&&['revoked','not_granted','capability_disabled','capability_removed','invalid_argument','transform_error'].includes(code)){this.be=null;this.state='local';}
+      else if(code==='unavailable'&&!this.retried){this.retried=true;this.dirty=true;this.state='saving';setTimeout(()=>{this.busy||this.flush();},2000+NATIVE_RANDOM()*2000);}
+      else{this.dirty=true;this.state='error';}
+    }
+    this.busy=false;paintSync();
+    if(ok&&this.dirty&&this.be)this.flush();
+  },
+  flushNow(){if(this.be&&this.dirty){clearTimeout(this.timer);this.flush();}},
+  refresh(){if(this.be&&!this.busy&&Date.now()-this.lastPull>30000)this.push(true);}
+};
+function paintSync(){
+  const el=document.getElementById('sync');if(!el)return;
+  const server=Sync.be&&Sync.be.kind==='server';
+  el.textContent={
+    connecting:'מתחבר לשמירה…',
+    cloud:server?'✓ ההתקדמות נשמרת בשרת. במכשיר אחר נכנסים עם קוד השחקן.':'✓ ההתקדמות נשמרת בחשבון שלך',
+    saving:'שומר את ההתקדמות…',
+    local:'ההתקדמות נשמרת בדפדפן של המכשיר הזה. למעבר למכשיר אחר – קוד התקדמות.',
+    error:server?'אין חיבור לשרת כרגע. ההתקדמות נשמרת במכשיר ותישלח כשהחיבור יחזור.':'השמירה בחשבון לא הצליחה כרגע. ההתקדמות נשמרת במכשיר הזה, וננסה שוב בבעיטה הבאה.'
+  }[Sync.state]||'';
+}
+/* ================= progress code (backup / move to another device) ================= */
+function slimStore(){
+  const days={};Object.keys(store.days).sort().slice(-60).forEach(k=>days[k]=store.days[k]);
+  return {v:2,name:store.name,named:true,best:store.best,cup:store.cup,gen:store.gen,st:store.st,log:store.log.slice(0,30),days,upd:store.upd,ep:store.ep};
+}
+const b64u={
+  enc:u8=>{let s='';for(let i=0;i<u8.length;i+=0x8000)s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000));return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');},
+  dec:str=>{let t=str.replace(/-/g,'+').replace(/_/g,'/');t+='='.repeat((4-t.length%4)%4);const s=atob(t),u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u;}
+};
+const canZip=()=>typeof CompressionStream==='function'&&typeof DecompressionStream==='function'&&typeof Response==='function'&&typeof Blob==='function';
+async function pipeBytes(u8,stream){return new Uint8Array(await new Response(new Blob([u8]).stream().pipeThrough(stream)).arrayBuffer());}
+async function makeCode(){
+  const bytes=new TextEncoder().encode(JSON.stringify(slimStore()));
+  if(canZip()){try{return 'LM1.'+b64u.enc(await pipeBytes(bytes,new CompressionStream('deflate-raw')));}catch(e){}}
+  return 'LM0.'+b64u.enc(bytes);
+}
+function sanitizeStore(o){
+  const ids=new Set(STATIONS.map(x=>x.id)),num=(x,lo,hi)=>{x=Math.floor(Number(x));return Number.isFinite(x)?Math.min(hi,Math.max(lo,x)):lo;};
+  const S=blank();
+  S.name=String(o.name||'').slice(0,16);S.named=true;
+  for(const [k,v] of Object.entries(o.best||{}))if(ids.has(k))S.best[k]=num(v,0,3);
+  S.cup=o.cup==null?null:num(o.cup,0,12);
+  for(const [k,v] of Object.entries(o.gen||{}))if(/^[a-z]+\.\d{1,2}$/.test(k)&&genByKey(k)&&v&&/^[01r]{0,8}$/.test(v.h||''))S.gen[k]={n:num(v.n,0,1e6),h:v.h||''};
+  for(const [k,v] of Object.entries(o.st||{}))if(ids.has(k)&&v)S.st[k]={g:num(v.g,0,1e6),k:num(v.k,0,1e7),f:num(v.f,0,1e7),t:num(v.t,0,4e12)};
+  (Array.isArray(o.log)?o.log:[]).slice(0,LOG_MAX).forEach(e=>{if(e&&['station','cup','redo'].includes(e.m))S.log.push({t:num(e.t,0,4e12),m:e.m,s:ids.has(e.s)?e.s:null,go:num(e.go,0,99),n:num(e.n,0,99),p:num(e.p,0,99),tr:num(e.tr,0,3)});});
+  for(const [k,v] of Object.entries(o.days||{}))if(/^\d{4}-\d{2}-\d{2}$/.test(k))S.days[k]=num(v,0,1e6);
+  S.upd=num(o.upd,0,4e12);S.ep=num(o.ep,0,4e12);
+  return S;
+}
+async function readCode(txt){
+  const s=String(txt).replace(/\s+/g,''),hit=/^LM([01])\.([A-Za-z0-9_-]+)$/.exec(s);
+  if(!hit)throw new Error('format');
+  let bytes=b64u.dec(hit[2]);
+  if(hit[1]==='1'){if(!canZip())throw new Error('nozip');bytes=await pipeBytes(bytes,new DecompressionStream('deflate-raw'));}
+  const o=JSON.parse(new TextDecoder().decode(bytes));
+  if(!o||o.v!==2||typeof o.best!=='object')throw new Error('shape');
+  return sanitizeStore(o);
+}
+function importStore(inc){
+  inc.ep=Math.max(inc.ep||0,store.ep||0);           // an explicit load is never blocked by an earlier reset here
+  const cur=store.cur;store=mergeStores(store,inc);store.cur=cur;
+  if(!store.name)store.name=inc.name;store.named=true;
+  saveStore();
+}
+async function joinWithCode(pc){
+  let remote;
+  try{remote=await sbCall('get_progress',{p_code:pc});}
+  catch(e){return {err:'net'};}
+  if(!remote||remote.v!==2)return {err:'missing'};
+  const inc=sanitizeStore(remote);
+  if(store.named&&getPlayer()&&getPlayer()!==pc&&Object.keys(store.st).length){
+    if(!confirm(`המשחק במכשיר הזה יעבור לשחקן ${inc.name||'עם הקוד הזה'}.\nההתקדמות של ${store.name||'השחקן הנוכחי'} נשארת שמורה בשרת עם הקוד ${getPlayer()}.\nלהמשיך?`))return {err:'cancel'};
+  }
+  clearTimeout(Sync.timer);Sync.dirty=false;
+  setPlayer(pc);store=inc;store.cur=null;saveLocal();
+  Sync.be=serverBackend(pc);Sync.state='cloud';Sync.lastPull=Date.now();
+  return {ok:true};
+}
+let screen='';
+function onRemoteMerged(){
+  if(screen==='home')renderHome();
+  else if(screen==='log')renderLog();
+  else if(screen==='name'&&store.named){const nm=document.getElementById('nm');if(!nm||document.activeElement!==nm||!nm.value.trim())renderHome();}
+  paintSync();
+}
+
+/* ---- stats ---- */
+const dayKey=(t=Date.now())=>{const d=new Date(t);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
+function streak(){let n=0;const d=new Date();if(!store.days[dayKey(d)])d.setDate(d.getDate()-1);while(store.days[dayKey(d)]){n++;d.setDate(d.getDate()-1);}return n;}
+function pruneDays(){const ks=Object.keys(store.days).sort();while(ks.length>120)delete store.days[ks.shift()];}
+function genByKey(gk){const [sid,ix]=String(gk).split('.');const st=STATIONS.find(s=>s.id===sid);if(!st)return null;const gen=st.gens[+ix];return gen?{st,gen}:null;}
+const firstRate=h=>{const r=h.slice(-4);return r?(r.split('1').length-1)/r.length:1;};
+function isWeak(r){if(!r||!r.h)return false;if(r.h.slice(-1)!=='1')return true;const rec=r.h.slice(-4);return rec.length>=2&&firstRate(rec)<0.5;}
+function weakKeys(){
+  const sc=k=>{const h=store.gen[k].h,l=h.slice(-1);return (l==='0'?0:l==='r'?1:2)+firstRate(h);};
+  return Object.keys(store.gen).filter(k=>genByKey(k)&&isWeak(store.gen[k])).sort((a,b)=>sc(a)-sc(b));
+}
+const accOf=id=>{const s=store.st[id];return s&&s.k?s.f/s.k:0;};
+function recommend(){
+  const unplayed=STATIONS.find(s=>!store.st[s.id]);
+  if(unplayed)return unplayed.id;
+  const c=STATIONS.filter(s=>(store.best[s.id]||0)<3);
+  if(!c.length)return 'cup';
+  c.sort((a,b)=>((store.best[a.id]||0)-(store.best[b.id]||0))||(accOf(a.id)-accOf(b.id)));
+  return c[0].id;
+}
+const trophyOf=p=>p>=9?3:p>=7?2:p>=4?1:0;
+function recordKick(item,ok,first){
+  const r=store.gen[item.gk]||(store.gen[item.gk]={n:0,h:''});
+  r.n++;r.h=(r.h+(ok?(first?'1':'r'):'0')).slice(-8);
+  const s=store.st[item.st.id]||(store.st[item.st.id]={g:0,k:0,f:0,t:0});
+  s.k++;if(ok&&first)s.f++;s.t=Date.now();
+  const d=dayKey();store.days[d]=(store.days[d]||0)+1;pruneDays();
+}
+function recordGameEnd(){
+  const e={t:Date.now(),m:G.mode,s:G.sid||null,go:G.goals,n:G.qs.length,p:G.points};
+  if(G.mode==='station'){
+    G.tr=trophyOf(G.points);G.prevBest=store.best[G.sid]||0;e.tr=G.tr;
+    if(G.tr>G.prevBest)store.best[G.sid]=G.tr;
+    const s=store.st[G.sid];if(s)s.g=(s.g||0)+1;
+  }
+  if(G.mode==='cup'){G.isRec=store.cup==null||G.goals>store.cup;if(G.isRec)store.cup=G.goals;}
+  store.log.unshift(e);store.log=store.log.slice(0,LOG_MAX);
+  store.cur=null;saveStore();
+}
+function saveCur(){
+  store.cur={m:G.mode,s:G.sid||null,it:G.qs.map(x=>[x.gk,x.seed]),i:G.results.length,go:G.goals,sv:G.saves,p:G.points,r:G.results.slice(),ms:G.missed.slice()};
+  saveStore();
+}
+
+/* ================= app ================= */
+let app,G=null;
+const $=s=>document.querySelector(s);
+const GOAL_MSG=['גוווול!','איזה גול!','ישר לחיבורים!','בול בפינה!','שער מושלם!','הרשת רועדת!'];
+const POST_MSG=['פגע בקורה!','כמעט! הכדור עבר ליד הקורה.','פגע במשקוף!'];
+const trophies=n=>[0,1,2].map(i=>`<span class="${i<n?'':'off'}">🏆</span>`).join('');
+const reduced=()=>window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const kindsText=n=>n===1?'סוג תרגיל אחד':`${n} סוגי תרגילים`;
+const DOW=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'],DOW_S=['א׳','ב׳','ג׳','ד׳','ה׳','ו׳','ש׳'];
+const when=t=>{const d=new Date(t);return `יום ${DOW[d.getDay()]} ${d.getDate()}.${d.getMonth()+1}, ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;};
+const ago=t=>{const n=Math.round((new Date(dayKey())-new Date(dayKey(t)))/864e5);return n<=0?'היום':n===1?'אתמול':`לפני ${n} ימים`;};
+const gameTitle=(m,s)=>m==='cup'?'🏆 גמר הגביע':m==='redo'?'🔁 חזרה על טעויות':(()=>{const st=STATIONS.find(x=>x.id===s);return st?`${st.icon} ${st.name}`:'';})();
+
+function renderName(){
+  screen='name';G=null;curGrid=null;
+  app.innerHTML=`<section class="kickoff">
+    <div class="ballbig" aria-hidden="true">⚽</div>
+    <h1>ליגת המספרים</h1>
+    <p>אימון למבדק תחילת כיתה ד׳. כל תשובה נכונה – גול!</p>
+    <label for="nm">איך קוראים לך?</label>
+    ${CLOUD?'<div class="note">שם פרטי או כינוי – בלי שם משפחה.</div>':''}
+    <div class="ans"><input id="nm" autocomplete="off" maxlength="16" dir="rtl" placeholder="השם שלך" value="${esc(store.name||'')}"><button class="kick" id="go">למגרש ⚽</button></div>
+    ${store.named?'':`<button class="hint-btn" id="haveCode">כבר שיחקתי במכשיר אחר – יש לי ${CLOUD?'קוד שחקן':'קוד התקדמות'}</button>`}
+  </section>`;
+  const go=()=>{
+    store.name=$('#nm').value.trim();store.named=true;
+    if(CLOUD&&!Sync.be){let pc=getPlayer();if(!pc){pc=newPlayerCode();setPlayer(pc);}Sync.be=serverBackend(pc);Sync.state='connecting';}
+    saveStore();renderHome();
+    if(CLOUD)Sync.push(true);
+  };
+  $('#go').onclick=go;
+  $('#nm').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();go();}};
+  const hc=$('#haveCode');if(hc)hc.onclick=()=>renderCode();
+}
+function renderHome(){
+  G=null;screen='home';curGrid=null;
+  const total=STATIONS.reduce((s,st)=>s+(store.best[st.id]||0),0);
+  const rec=recommend(),weak=weakKeys(),sk=streak(),today=store.days[dayKey()]||0,c=store.cur;
+  let streakLine='';
+  if(today&&sk>=2)streakLine=`🔥 ${sk} ימים ברצף! היום: ${today} בעיטות`;
+  else if(today)streakLine=`היום: ${today} בעיטות. חוזרים גם מחר? ככה בונים רצף 🔥`;
+  else if(sk)streakLine=`🔥 רצף של ${sk===1?'יום אחד':sk+' ימים'}. בעיטה אחת היום והרצף ממשיך!`;
+  const tag='<span class="tag">המאמן ממליץ</span>';
+  app.innerHTML=`
+  <header class="board">
+    <div class="brand">⚽ ליגת המספרים</div>
+    <div class="board-row"><div class="who">${store.name?esc(store.name)+', ':''}גביעים בעונה</div><div class="led">${total}<small>/${STATIONS.length*3}</small></div></div>
+    ${streakLine?`<div class="streak">${streakLine}</div>`:''}
+  </header>
+  ${c?`<section class="resume"><div class="resume-t"><b>משחק שלא נגמר</b><br>${gameTitle(c.m,c.s)}, בעיטה ${c.i+1} מתוך ${c.it.length}</div><button class="kick" id="resume">להמשיך ⚽</button></section>`:''}
+  <p class="howto">כל מגרש הוא משחק של 5 בעיטות. תשובה נכונה = גול. טעיתם? מקבלים טיפ מהמאמן וניסיון נוסף.</p>
+  <button class="cup" id="cup"><span class="cup-t">🏆 גמר הגביע</span><span class="cup-s">${rec==='cup'?tag:''}12 פנדלים מכל הנושאים, בלי טיפים – כמו במבדק האמיתי.${store.cup!=null?`<br>השיא שלך: ${store.cup} מתוך 12`:''}</span></button>
+  ${weak.length?`<button class="redo" id="redo"><span class="redo-t">🔁 חזרה על טעויות</span><span class="redo-s">${kindsText(weak.length)} שכדאי לחזק. אותו סוג תרגיל, מספרים חדשים.</span></button>`:''}
+  <section class="league" aria-label="טבלת הליגה">
+    <div class="league-head"><span>מגרש</span><span>גביעים</span></div>
+    ${STATIONS.map(st=>{const s=store.st[st.id],sub=s&&s.k?`${s.k} בעיטות, ${Math.round(100*s.f/s.k)}% בניסיון ראשון`:'עוד לא שיחקת כאן';
+      return `<button class="row" data-id="${st.id}"><span class="ic" aria-hidden="true">${st.icon}</span><span class="nm">${st.name}<small>${rec===st.id?tag:''}${sub}</small></span><span class="tr" aria-label="${store.best[st.id]||0} גביעים">${trophies(store.best[st.id]||0)}</span></button>`;}).join('')}
+  </section>
+  <footer class="foot">בנוי לפי מבדק תחילת כיתה ד׳ (בלי שאלות השברים 21–23). כל משחק מגריל מספרים חדשים.<br>
+  <span class="sync" id="sync"></span><br>
+  <button class="link" id="log">📒 יומן אימונים</button><button class="link" id="code">🔑 ${CLOUD?'קוד שחקן':'קוד התקדמות'}</button><button class="link" id="rename">החלפת שם</button><button class="link" id="reset">איפוס ההתקדמות</button></footer>`;
+  if(c)$('#resume').onclick=resumeGame;
+  $('#cup').onclick=startCup;
+  if(weak.length)$('#redo').onclick=startRedo;
+  app.querySelectorAll('.row[data-id]').forEach(b=>b.onclick=()=>startStation(b.dataset.id));
+  $('#log').onclick=renderLog;
+  $('#code').onclick=()=>renderCode();
+  $('#rename').onclick=renderName;
+  $('#reset').onclick=()=>{if(confirm('למחוק את כל ההתקדמות – גביעים, יומן אימונים וטעויות – ולהתחיל עונה חדשה?')){const n=store.name;store=blank();store.name=n;store.named=true;store.ep=Date.now();saveStore();renderHome();}};
+  paintSync();
+  window.scrollTo(0,0);
+}
+function renderLog(){
+  G=null;screen='log';curGrid=null;
+  const sts=STATIONS.map(st=>({st,s:store.st[st.id]}));
+  const kicks=sts.reduce((n,x)=>n+(x.s?x.s.k:0),0),firsts=sts.reduce((n,x)=>n+(x.s?x.s.f:0),0);
+  const nDays=Object.values(store.days).filter(v=>v>0).length,pct=kicks?Math.round(100*firsts/kicks):0;
+  const week=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);week.push({lab:i===0?'היום':DOW_S[d.getDay()],v:store.days[dayKey(d)]||0});}
+  const mx=Math.max(10,...week.map(w=>w.v));
+  const weakBy={};weakKeys().forEach(k=>{const s=k.split('.')[0];weakBy[s]=(weakBy[s]||0)+1;});
+  app.innerHTML=`<header class="board">
+    <div class="brand">📒 יומן אימונים${store.name?' של '+esc(store.name):''}</div>
+    <div class="stats3"><div><b>${nDays}</b><span>ימי אימון</span></div><div><b>${kicks}</b><span>בעיטות</span></div><div><b dir="ltr">${pct}%</b><span>גול בניסיון ראשון</span></div></div>
+  </header>
+  <section class="sheet"><h2>השבוע</h2><div class="week">${week.map(w=>`<div><b>${w.v||''}</b><i style="height:${Math.max(3,Math.round(w.v/mx*70))}px"></i><span>${w.lab}</span></div>`).join('')}</div></section>
+  <section class="sheet"><h2>לפי מגרש</h2>${sts.map(({st,s})=>`<div class="lrow"><span class="ic" aria-hidden="true">${st.icon}</span><span class="nm">${st.name}<small>${s&&s.k?`${s.k} בעיטות, ${Math.round(100*s.f/s.k)}% בניסיון ראשון<br>משחק אחרון: ${ago(s.t)}`:'עוד לא שיחקת כאן'}${weakBy[st.id]?`<span class="warn">${kindsText(weakBy[st.id])} לחיזוק</span>`:''}</small></span><span class="tr">${trophies(store.best[st.id]||0)}</span></div>`).join('')}</section>
+  <section class="sheet"><h2>משחקים אחרונים</h2>${store.log.length?store.log.slice(0,25).map(e=>`<div class="lrow"><span class="nm">${gameTitle(e.m,e.s)}<small>${when(e.t)}</small></span><span class="sc" dir="ltr">${e.go}/${e.n}</span></div>`).join(''):'<p class="empty">עוד אין כאן משחקים. כל משחק שמסתיים נרשם ביומן.</p>'}</section>
+  <div class="endbtns"><button class="ghost" id="home">חזרה לטבלת הליגה</button></div>`;
+  $('#home').onclick=renderHome;
+  window.scrollTo(0,0);
+}
+
+function renderCode(prefill,err){
+  G=null;screen='code';curGrid=null;
+  if(CLOUD)return renderPlayerCode(prefill,err);
+  app.innerHTML=`<header class="board"><div class="brand">🔑 קוד התקדמות</div>
+    <p class="board-p">הקוד שומר את הגביעים, היומן והטעויות. ככה ממשיכים במכשיר אחר, או מחזירים התקדמות שנמחקה.</p></header>
+  <section class="sheet"><h2>לשמור את ההתקדמות</h2>
+    <p class="sheet-p">העתיקו את הקוד ושלחו אותו לעצמכם, למשל בוואטסאפ.</p>
+    <textarea id="codeOut" class="code" readonly rows="4" dir="ltr" aria-label="קוד ההתקדמות שלכם">יוצר קוד…</textarea>
+    <button class="kick wide" id="copy" disabled>העתקת הקוד</button>
+    <div class="toast ok" id="copyMsg" aria-live="polite"></div></section>
+  <section class="sheet"><h2>לטעון התקדמות</h2>
+    <p class="sheet-p">הדביקו כאן קוד ממכשיר אחר. מה שכבר יש כאן לא נמחק – נשמר הטוב מבין השניים.</p>
+    <textarea id="codeIn" class="code" rows="4" dir="ltr" placeholder="LM1…" aria-label="הדבקת קוד התקדמות" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
+    <button class="kick wide" id="load">טעינת ההתקדמות</button>
+    <div class="toast" id="loadMsg" aria-live="polite"></div></section>
+  <div class="endbtns"><button class="ghost" id="home">${store.named?'חזרה לטבלת הליגה':'חזרה'}</button></div>`;
+  $('#home').onclick=()=>store.named?renderHome():renderName();
+  const fill=()=>makeCode().then(c=>{if(screen!=='code')return;$('#codeOut').value=c;$('#copy').disabled=false;});
+  if(store.named)fill();else{$('#codeOut').value='עוד אין התקדמות לשמור.';}
+  $('#copy').onclick=async()=>{
+    const ta=$('#codeOut'),msg=$('#copyMsg');let ok=false;
+    try{await navigator.clipboard.writeText(ta.value);ok=true;}catch(e){}
+    if(!ok){ta.focus();ta.select();try{ok=document.execCommand('copy');}catch(e){}}
+    msg.textContent=ok?'הקוד הועתק ✓':'סמנו את הקוד והעתיקו אותו ידנית.';
+  };
+  $('#load').onclick=async()=>{
+    const msg=$('#loadMsg'),v=$('#codeIn').value.trim();msg.classList.remove('ok');
+    if(!v){msg.textContent='הדביקו קודם את הקוד.';return;}
+    let inc;
+    try{inc=await readCode(v);}
+    catch(e){msg.textContent=e.message==='nozip'?'הדפדפן הזה ישן מדי בשביל הקוד. פתחו את המשחק בדפדפן מעודכן ונסו שוב.':'הקוד לא תקין. ודאו שהעתקתם את כולו, מההתחלה ועד הסוף.';return;}
+    importStore(inc);
+    const tr=STATIONS.reduce((n,st)=>n+(store.best[st.id]||0),0);
+    msg.classList.add('ok');msg.textContent=`ההתקדמות נטענה ✓ ${store.name?store.name+', ':''}${tr} גביעים בעונה.`;
+    $('#codeIn').value='';$('#home').textContent='חזרה לטבלת הליגה';
+    fill();
+  };
+  window.scrollTo(0,0);
+}
+function renderPlayerCode(prefill,err){
+  if(typeof prefill!=='string')prefill='';if(typeof err!=='string')err='';
+  const pc=store.named?getPlayer():null;
+  app.innerHTML=`<header class="board"><div class="brand">🔑 קוד שחקן</div>
+    <p class="board-p">ההתקדמות נשמרת בשרת תחת קוד השחקן. עם הקוד ממשיכים מכל מכשיר.</p></header>
+  ${pc?`<section class="sheet"><h2>הקוד של ${store.name?esc(store.name):'השחקן'}</h2>
+    <div class="pcode" dir="ltr">${pc}</div>
+    <p class="sheet-p">הכי קל: שלחו לעצמכם את הקישור האישי ופתחו אותו במכשיר השני.</p>
+    <button class="kick wide" id="copyLink">העתקת הקישור האישי</button>
+    <button class="ghost dark" id="copyCode">העתקת הקוד בלבד</button>
+    <div class="toast ok" id="copyMsg" aria-live="polite"></div></section>`:''}
+  <section class="sheet"><h2>${pc?'להיכנס כשחקן אחר':'כבר שיחקתי במכשיר אחר'}</h2>
+    <p class="sheet-p">מקלידים את קוד השחקן – 12 אותיות ומספרים באנגלית.</p>
+    <div class="ans"><input id="pcIn" dir="ltr" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" maxlength="20" placeholder="XXXX-XXXX-XXXX" aria-label="קוד שחקן" value="${esc(prefill||'')}"><button class="kick" id="join">כניסה</button></div>
+    <div class="toast" id="joinMsg" aria-live="polite">${err||''}</div></section>
+  <div class="endbtns"><button class="ghost" id="home">${store.named?'חזרה לטבלת הליגה':'חזרה'}</button></div>`;
+  $('#home').onclick=()=>store.named?renderHome():renderName();
+  const copy=async(text,label)=>{let ok=false;try{await navigator.clipboard.writeText(text);ok=true;}catch(e){}
+    if(!ok){const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{ok=document.execCommand('copy');}catch(e){}ta.remove();}
+    $('#copyMsg').textContent=ok?`${label} הועתק ✓`:`לא הצלחתי להעתיק. הקוד: ${pc}`;};
+  if(pc){$('#copyLink').onclick=()=>copy(playerLink(pc),'הקישור');$('#copyCode').onclick=()=>copy(pc,'הקוד');}
+  const join=async()=>{
+    const msg=$('#joinMsg'),code=normCode($('#pcIn').value);msg.classList.remove('ok');
+    if(!code){msg.textContent='הקוד לא שלם. יש בו 12 אותיות ומספרים, למשל K7QM-2XRA-9TPD.';return;}
+    if(code===pc){msg.textContent='זה כבר הקוד של המכשיר הזה.';return;}
+    $('#join').disabled=true;msg.textContent='מחפש…';
+    const r=await joinWithCode(code);$('#join').disabled=false;
+    if(r.ok)return renderHome();
+    msg.textContent=r.err==='missing'?'לא מצאנו שחקן עם הקוד הזה. בדקו את האותיות והמספרים.':r.err==='net'?'אין חיבור לשרת כרגע. נסו שוב בעוד רגע.':'';
+  };
+  $('#join').onclick=join;
+  $('#pcIn').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();join();}};
+  window.scrollTo(0,0);
+}
+function buildItem(gk,seed){const x=genByKey(gk);return {q:seeded(seed,()=>makeQ(x.gen)),st:x.st,gk,seed};}
+function startGame(mode,sid,gks){
+  G={mode,sid,qs:gks.map(gk=>buildItem(gk,newSeed())),i:0,goals:0,saves:0,points:0,results:[],missed:[]};
+  saveCur();renderQ();
+}
+function startStation(id){
+  const st=STATIONS.find(s=>s.id===id),order=shuffle(st.gens.map((_,i)=>st.id+'.'+i)),gks=[];
+  for(let i=0;i<5;i++)gks.push(order[i%order.length]);
+  startGame('station',id,gks);
+}
+function startCup(){
+  const extra=rnd(0,STATIONS.length-1),gks=[],one=st=>st.id+'.'+rnd(0,st.gens.length-1);
+  STATIONS.forEach((st,k)=>{gks.push(one(st));if(k===extra)gks.push(one(st));});
+  startGame('cup',null,gks);
+}
+function startRedo(){
+  const w=weakKeys();if(!w.length)return renderHome();
+  const n=Math.min(5,Math.max(3,w.length)),gks=[];
+  for(let i=0;i<n;i++)gks.push(w[i%w.length]);
+  startGame('redo',null,shuffle(gks));
+}
+function resumeGame(){
+  const c=store.cur;
+  try{
+    const qs=c.it.map(([gk,seed])=>{if(!genByKey(gk))throw new Error('gen');return buildItem(gk,seed);});
+    if(c.i>=qs.length)throw new Error('done');
+    G={mode:c.m,sid:c.s,qs,i:c.i,goals:c.go,saves:c.sv,points:c.p,results:c.r.slice(),missed:c.ms.slice()};
+    renderQ();
+  }catch(e){store.cur=null;saveStore();renderHome();}
+}
+function topbar(){
+  const dots=G.qs.map((_,i)=>{const r=G.results[i];return `<i class="${r==='goal'||r==='reb'?'g':r==='save'?'s':i===G.i?'c':''}"></i>`;}).join('');
+  return `<div class="top"><button class="exit" id="exit" aria-label="יציאה לטבלת הליגה (המשחק נשמר)">✕</button><div class="score"><span class="t">${esc(store.name||'אני')}</span><span class="d" dir="ltr"><b id="ss">${G.saves}</b>:<b id="sg">${G.goals}</b></span><span class="t">השוער</span></div></div><div class="kicks" aria-label="בעיטה ${G.i+1} מתוך ${G.qs.length}">${dots}</div>`;
+}
+function wireTop(){$('#exit').onclick=renderHome;}
+const maxAttempts=q=>G.mode==='cup'?1:((q.kind==='choice'&&q.options.length<=3)||q.kind==='cmp')?1:2;
+function answerArea(q){
+  if(q.kind==='choice')return `<div class="opts ${q.wide?'wide':''}">${q.options.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join('')}</div>`;
+  if(q.kind==='cmp')return `<div class="cmpx" dir="ltr"><span>${q.left}</span><span class="cbox" id="cbox" aria-label="ריבוע"></span><span>${q.right}</span></div><div class="opts sym" dir="ltr">${['<','>','='].map(s=>`<button class="opt" data-s="${s}" aria-label="${s==='<'?'קטן מ':s==='>'?'גדול מ':'שווה'}">${symH(s)}</button>`).join('')}</div>`;
+  const numeric=q.kind!=='text';
+  return `<div class="ans"><input id="inp" ${numeric?'inputmode="numeric" dir="ltr"':'dir="rtl"'} autocomplete="off" autocorrect="off" spellcheck="false" aria-label="התשובה שלך" placeholder="${numeric?'?':'המילה'}"><button class="kick" id="kick">בעיטה ⚽</button></div><div class="toast" id="toast" aria-live="polite"></div>`;
+}
+function renderQ(){
+  screen='game';
+  const {q,st}=G.qs[G.i];G.attempt=0;G.locked=false;G.scratch=null;curGrid=null;
+  G.grid=q.grid?makeGrid(q.grid.a,q.grid.b,q.grid.op,'answer'):null;
+  const cup=G.mode==='cup',sop=!q.grid&&SCRATCH[st.id];
+  const meta=G.mode==='redo'?`🔁 חזרה על טעויות: ${st.name}`:`${st.icon} ${st.name}`;
+  const tools=(cup?'':'<button class="hint-btn" id="hintBtn" aria-expanded="false" aria-controls="hint">📋 טיפ מהמאמן</button>')+(sop?'<button class="hint-btn" id="scrBtn" aria-expanded="false" aria-controls="scr">📝 טיוטה בטור</button>':'');
+  app.innerHTML=`<div id="tb">${topbar()}</div>
+  <main class="card">
+    <div class="q-meta">${meta}</div>
+    <div class="q-prompt">${q.prompt}</div>
+    ${q.visual?`<div class="q-visual">${q.visual}</div>`:''}
+    ${G.grid?nbHTML(G.grid)+padHTML(G.grid)+'<div class="toast" id="toast" aria-live="polite"></div>':answerArea(q)}
+    <div class="fb" id="fb" aria-live="polite"></div>
+    ${tools?`<div class="tools">${tools}</div>`:''}
+    ${cup?'':`<div class="hint" id="hint" hidden>${q.hint}</div>`}
+    ${sop?scratchBox(sop):''}
+  </main>`;
+  wireTop();
+  if(G.grid){wireGrid(G.grid);wirePad(G.grid);curGrid=G.grid;}
+  else if(q.kind==='choice')app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>submit(b.dataset.i,b));
+  else if(q.kind==='cmp')app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{$('#cbox').innerHTML=symH(b.dataset.s);submit(b.dataset.s,b);});
+  else{
+    const inp=$('#inp');
+    $('#kick').onclick=()=>submit(inp.value);
+    inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();submit(inp.value);}};
+  }
+  const hb=$('#hintBtn');
+  if(hb)hb.onclick=()=>{const h=$('#hint');h.hidden=!h.hidden;hb.setAttribute('aria-expanded',String(!h.hidden));};
+  if(sop)wireScratch(sop);
+  window.scrollTo(0,0);
+}
+function judge(q,val){
+  if(q.kind==='num'){if(!isInt(val))return null;return Number(clean(val))===q.answer;}
+  if(q.kind==='text')return normHe(val)===normHe(q.answer);
+  if(q.kind==='open')return !!q.check(val);
+  if(q.kind==='choice')return Number(val)===q.answer;
+  if(q.kind==='cmp')return val===q.answer;
+  return false;
+}
+function submitGrid(){
+  if(!G||G.locked||!G.grid)return;
+  const r=gridValue(G.grid),t=$('#toast');
+  if(r.empty){t.textContent='כתבו את התוצאה במשבצות שמתחת לקו.';return;}
+  if(r.gap){t.textContent='חסרה ספרה. ממלאים כל עמודה, מהיחידות (מימין) שמאלה.';return;}
+  submit(String(r.v));
+}
+function submit(val,btn){
+  if(G.locked)return;
+  const {q}=G.qs[G.i];
+  const typed=q.kind==='num'||q.kind==='text'||q.kind==='open';
+  if(typed&&!String(val).trim()){$('#toast').textContent='קודם כותבים תשובה, ואז בועטים.';return;}
+  const ok=judge(q,val);
+  if(ok===null){$('#toast').textContent='כאן צריך לכתוב מספר – רק ספרות.';return;}
+  if(typed)$('#toast').textContent='';
+  G.attempt++;
+  if(ok){if(btn)btn.classList.add('right');if(q.kind==='cmp')$('#cbox').classList.add('ok');return finish(true);}
+  if(btn){btn.classList.add('wrong');btn.disabled=true;}
+  if(G.attempt<maxAttempts(q)){
+    let say='יש לכם עוד ניסיון. הנה טיפ מהמאמן:';
+    if(G.grid){const p=firstBadCol(G.grid,q.answer);if(p>=0){G.grid.bad=p;G.grid.sel={r:'res',p};curGrid=G.grid;paintGrid(G.grid);say=`יש טעות בעמודת ${placeThe(p)}. תקנו ובעטו שוב. הנה טיפ מהמאמן:`;}}
+    $('#fb').innerHTML=`<div class="panel post"><h3>${pick(POST_MSG)}</h3>${say}</div>`;
+    const h=$('#hint');if(h){h.hidden=false;$('#hintBtn').setAttribute('aria-expanded','true');}
+    if(typed&&!G.grid){const inp=$('#inp');if(inp){inp.value='';inp.focus();}}
+    return;
+  }
+  if(q.kind==='cmp')$('#cbox').classList.add('no');
+  finish(false);
+}
+function answerHTML(q){
+  if(q.kind==='num')return m(fmt(q.answer));
+  if(q.kind==='text')return `<b>${q.answer}</b>`;
+  if(q.kind==='open')return 'למשל '+m(q.sample);
+  if(q.kind==='choice')return `<b>${q.options[q.answer]}</b>`;
+  return `<span class="m" dir="ltr">${q.left} ${symH(q.answer)} ${q.right}</span>`;
+}
+function goalFlash(){
+  if(reduced())return;
+  const d=document.createElement('div');d.className='goalflash';d.innerHTML='<span>גול! ⚽</span>';
+  document.body.appendChild(d);setTimeout(()=>d.remove(),1000);
+}
+function finish(ok){
+  G.locked=true;
+  const item=G.qs[G.i],{q,st}=item,first=G.attempt===1;
+  let head,cls;
+  if(ok){
+    G.points+=first?2:1;G.goals++;G.results[G.i]=first?'goal':'reb';
+    head=first?pick(GOAL_MSG):'גול בריבאונד! (בניסיון השני)';cls='goal';goalFlash();
+  }else{
+    G.saves++;G.results[G.i]='save';G.missed.push(st.id);
+    head='השוער עצר הפעם';cls='save';
+    if(q.kind==='choice'){const b=app.querySelector(`.opt[data-i="${q.answer}"]`);if(b)b.classList.add('right');}
+    if(q.kind==='cmp'){const b=app.querySelector(`.opt[data-s="${q.answer}"]`);if(b)b.classList.add('right');}
+  }
+  app.querySelectorAll('.opt,#kick,#inp').forEach(el=>el.disabled=true);
+  if(G.grid){G.grid.locked=true;G.grid.bad=-1;paintGrid(G.grid);const pad=app.querySelector(`.pad[data-g="${G.grid.id}"]`);if(pad)pad.hidden=true;}
+  const last=G.i===G.qs.length-1;
+  recordKick(item,ok,first);
+  if(last)recordGameEnd();else saveCur();
+  $('#tb').innerHTML=topbar();wireTop();
+  const bumpEl=$(ok?'#sg':'#ss');if(bumpEl)bumpEl.classList.add('bump');
+  $('#fb').innerHTML=`<div class="panel ${cls}"><h3>${head}</h3>${ok?'':`התשובה הנכונה: ${answerHTML(q)}`}<div class="explain"><b>ככה פותרים:</b><br>${q.explain}</div></div>
+    <button class="kick wide next" id="next">${last?'לשריקת הסיום':'לבעיטה הבאה'}</button>`;
+  $('#next').onclick=nextQ;
+  $('#fb').scrollIntoView({behavior:reduced()?'auto':'smooth',block:'nearest'});
+}
+function nextQ(){G.i++;if(G.i>=G.qs.length)return G.mode==='cup'?endCup():G.mode==='redo'?endRedo():endStation();renderQ();}
+function endStation(){
+  screen='end';curGrid=null;
+  const st=STATIONS.find(s=>s.id===G.sid),tr=G.tr||0,prev=G.prevBest||0;
+  const msg=tr===3?'משחק מושלם!':tr===2?'ניצחון יפה! עוד קצת ותגיעו ל-3 גביעים.':tr===1?'עלינו על הלוח! משחק חוזר יביא עוד גביע.':'גם אלופים מפסידים לפעמים. קראו את הטיפים ונסו שוב.';
+  app.innerHTML=`<section class="board final">
+    <div class="brand">שריקת סיום – ${st.icon} ${st.name}</div>
+    <div class="final-score"><span class="t">${esc(store.name||'אני')}</span><span class="d" dir="ltr">${G.saves}:${G.goals}</span><span class="t">השוער</span></div>
+    <div class="trophies big" aria-label="${tr} גביעים">${trophies(tr)}</div>
+    <p>${msg}</p>${tr>prev&&tr>0?'<p class="rec">שיא חדש במגרש הזה!</p>':''}
+  </section>
+  <div class="endbtns"><button class="kick wide" id="again">משחק חוזר</button><button class="ghost" id="home">חזרה לטבלת הליגה</button></div>`;
+  const id=G.sid;$('#again').onclick=()=>startStation(id);$('#home').onclick=renderHome;window.scrollTo(0,0);
+}
+function endCup(){
+  screen='end';curGrid=null;
+  const score=G.goals,total=G.qs.length,isRec=!!G.isRec;
+  const missed=uniq(G.missed).map(id=>STATIONS.find(s=>s.id===id));
+  const msg=score===total?'אלופי הגביע! נראה שאתם מוכנים למבדק.':score>=10?'כמעט מושלם! עוד אימון קטן במגרשים שלמטה.':score>=7?'גמר יפה! כדאי להתאמן על המגרשים שלמטה.':'כל אלוף מתחיל באימונים. בואו נתאמן על המגרשים שלמטה ונחזור לגמר.';
+  app.innerHTML=`<section class="board final">
+    <div class="brand">🏆 גמר הגביע</div>
+    <div class="final-score"><span class="d" dir="ltr">${score}/${total}</span></div>
+    <p>${msg}</p>${isRec?'<p class="rec">שיא חדש!</p>':''}
+  </section>
+  ${missed.length?`<section class="practice"><h2>כדאי להתאמן על:</h2>${missed.map(st=>`<button class="row" data-id="${st.id}"><span class="ic" aria-hidden="true">${st.icon}</span><span class="nm">${st.name}</span></button>`).join('')}</section>`:''}
+  <div class="endbtns"><button class="kick wide" id="again">עוד גמר</button><button class="ghost" id="home">חזרה לטבלת הליגה</button></div>`;
+  app.querySelectorAll('.practice .row').forEach(b=>b.onclick=()=>startStation(b.dataset.id));
+  $('#again').onclick=startCup;$('#home').onclick=renderHome;window.scrollTo(0,0);
+}
+function endRedo(){
+  screen='end';curGrid=null;
+  const left=weakKeys().length,all=G.goals===G.qs.length;
+  app.innerHTML=`<section class="board final">
+    <div class="brand">🔁 חזרה על טעויות</div>
+    <div class="final-score"><span class="d" dir="ltr">${G.goals}/${G.qs.length}</span></div>
+    <p>${all?'כל הכבוד! הפעם זה נכנס.':'יפה שחזרתם על זה. עוד חזרה אחת והתרגילים האלה ישבו טוב.'}</p>
+    <p>${left?`עוד ${kindsText(left)} לחיזוק.`:'אין יותר טעויות שמחכות לחזרה. 💪'}</p>
+  </section>
+  <div class="endbtns">${left?'<button class="kick wide" id="again">עוד חזרה</button>':''}<button class="ghost" id="home">חזרה לטבלת הליגה</button></div>`;
+  if(left)$('#again').onclick=startRedo;
+  $('#home').onclick=renderHome;window.scrollTo(0,0);
+}
+function init(){
+  app=document.getElementById('app');loadStore();
+  window.addEventListener('keydown',onGridKeydown);
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')Sync.flushNow();else Sync.refresh();});
+  window.addEventListener('pagehide',()=>Sync.flushNow());
+  window.addEventListener('online',()=>{if(Sync.be)Sync.push(true);});
+  if(!store.named)renderName();else renderHome();
+  Sync.init();
+  if(CLOUD){
+    const hit=/[#&]p=([^&]+)/.exec(location.hash||''),pc=hit?normCode(decodeURIComponent(hit[1])):null;
+    if(hit)try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
+    if(pc&&pc!==getPlayer())joinWithCode(pc).then(r=>{if(r.ok)renderHome();else if(r.err!=='cancel')renderCode(pc,r.err==='missing'?'לא מצאנו שחקן עם הקוד שבקישור. בדקו שהעתקתם את כולו.':'אין חיבור לשרת כרגע. נסו שוב בעוד רגע.');});
+  }
+}
+if(typeof document!=='undefined'&&document.getElementById('app'))init();
+</script>
+</body>
+</html>
